@@ -11,4 +11,6 @@ public interface UserService
 	public ResponseEntity<ResponseStructure<String>> addUser(UserRequestDTO userRequestDTO);
 	
 	public ResponseEntity<ResponseStructure<User>> findUserById(int id);
+	
+	public ResponseEntity<ResponseStructure<String>> updateUserById(UserRequestDTO userRequestDTO,int id);
 }

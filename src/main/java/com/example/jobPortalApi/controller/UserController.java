@@ -30,4 +30,10 @@ public class UserController
 	{
 		return userService.findUserById(id);
 	}
+	
+	@RequestMapping(value = "/users/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<ResponseStructure<String>> updateUserById(@RequestBody UserRequestDTO userRequestDTO,@PathVariable int id)
+	{
+		return userService.updateUserById(userRequestDTO,id);
+	}
 }
