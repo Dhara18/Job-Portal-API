@@ -2,11 +2,13 @@ package com.example.jobPortalApi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobPortalApi.entity.User;
 import com.example.jobPortalApi.requestDTO.UserRequestDTO;
 import com.example.jobPortalApi.service.UserService;
 import com.example.jobPortalApi.utility.ResponseStructure;
@@ -21,5 +23,11 @@ public class UserController
 	public ResponseEntity<ResponseStructure<String>> addUser(@RequestBody UserRequestDTO userRequestDTO)
 	{
 		return userService.addUser(userRequestDTO);
+	}
+	
+	@RequestMapping(value = "/users/{id}",method = RequestMethod.GET)
+	public ResponseEntity<ResponseStructure<User>> findUserById(@PathVariable int id)
+	{
+		return userService.findUserById(id);
 	}
 }

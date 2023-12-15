@@ -21,8 +21,9 @@ public class User
 	
 	@OneToMany
 	private List<Company> companyList;
-	@OneToOne
-	private List<Resume> resumeList;
+	
+	@OneToOne(mappedBy = "user")
+	private Resume resume;
 	@OneToMany
 	private List<JobApplication> jobApplicationList;
 	
@@ -64,11 +65,12 @@ public class User
 	public void setCompanyList(List<Company> companyList) {
 		this.companyList = companyList;
 	}
-	public List<Resume> getResumeList() {
-		return resumeList;
+	
+	public Resume getResume() {
+		return resume;
 	}
-	public void setResumeList(List<Resume> resumeList) {
-		this.resumeList = resumeList;
+	public void setResume(Resume resume) {
+		this.resume = resume;
 	}
 	public List<JobApplication> getJobApplicationList() {
 		return jobApplicationList;

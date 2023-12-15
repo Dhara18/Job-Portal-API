@@ -1,11 +1,14 @@
 package com.example.jobPortalApi.serviceImpl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.jobPortalApi.entity.User;
+import com.example.jobPortalApi.exception.UserNotFoundException;
 import com.example.jobPortalApi.repository.UserRepo;
 import com.example.jobPortalApi.requestDTO.UserRequestDTO;
 import com.example.jobPortalApi.responseDTO.UserResponseDTO;
@@ -53,6 +56,29 @@ public class UserServiceImpl implements UserService
 		responseStructure.setData("user object stored in the data base");
 		
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<User>> findUserById(int id) 
+	{
+		Optional<User> optionalUser = userRepo.findById(id);	
+		
+		if(optionalUser.isPresent())
+		{
+			User user = optionalUser.get();
+			
+			ResponseStructure<User> responseStructure=new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("User object successfully found");
+			responseStructure.setData(user);
+			
+			return new ResponseEntity<ResponseStructure<User>>(responseStructure, HttpStatus.FOUND);
+		}
+		
+		else
+		{
+			throw new UserNotFoundException("user with given id does not exist"); 
+		}
 	}
 
 
