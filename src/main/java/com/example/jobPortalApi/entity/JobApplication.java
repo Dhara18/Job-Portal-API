@@ -1,5 +1,9 @@
 package com.example.jobPortalApi.entity;
 
-public class JobApplication {
+import jakarta.persistence.Entity;
+
+@Entity
+public class JobApplication 
+{
 
 }

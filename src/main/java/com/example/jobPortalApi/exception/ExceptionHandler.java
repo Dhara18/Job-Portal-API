@@ -1,5 +1,9 @@
 package com.example.jobPortalApi.exception;
 
-public class ExceptionHandler {
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@RestControllerAdvice
+public class ExceptionHandler 
+{
+	
 }
