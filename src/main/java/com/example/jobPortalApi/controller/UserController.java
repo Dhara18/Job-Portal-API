@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jobPortalApi.entity.User;
 import com.example.jobPortalApi.requestDTO.UserRequestDTO;
+import com.example.jobPortalApi.responseDTO.UserResponseDTO;
 import com.example.jobPortalApi.service.UserService;
 import com.example.jobPortalApi.utility.ResponseStructure;
 
@@ -26,7 +27,7 @@ public class UserController
 	}
 	
 	@RequestMapping(value = "/users/{id}",method = RequestMethod.GET)
-	public ResponseEntity<ResponseStructure<User>> findUserById(@PathVariable int id)
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> findUserById(@PathVariable int id)
 	{
 		return userService.findUserById(id);
 	}
@@ -35,5 +36,11 @@ public class UserController
 	public ResponseEntity<ResponseStructure<String>> updateUserById(@RequestBody UserRequestDTO userRequestDTO,@PathVariable int id)
 	{
 		return userService.updateUserById(userRequestDTO,id);
+	}
+	
+	@RequestMapping(value = "/users/{id}",method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> deleteByUserById(@PathVariable int id)
+	{
+		return userService.deleteByUserById(id);
 	}
 }

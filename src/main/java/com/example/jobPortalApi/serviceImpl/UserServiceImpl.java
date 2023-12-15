@@ -59,20 +59,21 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<User>> findUserById(int id) 
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> findUserById(int id) 
 	{
 		Optional<User> optionalUser = userRepo.findById(id);	
 
 		if(optionalUser.isPresent())
 		{
 			User user = optionalUser.get();
-
-			ResponseStructure<User> responseStructure=new ResponseStructure<>();
+			UserResponseDTO userResponseDTO=UserToUserResponseDTO(user);
+			
+			ResponseStructure<UserResponseDTO> responseStructure=new ResponseStructure<>();
 			responseStructure.setStatusCode(HttpStatus.FOUND.value());
 			responseStructure.setMessage("User object successfully found");
-			responseStructure.setData(user);
+			responseStructure.setData(userResponseDTO);
 
-			return new ResponseEntity<ResponseStructure<User>>(responseStructure, HttpStatus.FOUND);
+			return new ResponseEntity<ResponseStructure<UserResponseDTO>>(responseStructure, HttpStatus.FOUND);
 		}
 
 		else
@@ -110,5 +111,31 @@ public class UserServiceImpl implements UserService
 		}
 
 
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> deleteByUserById(int id) 
+	{
+		Optional<User> optionalUser = userRepo.findById(id);	
+
+		if(optionalUser.isPresent())
+		{
+			User user = optionalUser.get();
+			UserResponseDTO userResponse = UserToUserResponseDTO(user);
+			
+			userRepo.deleteById(id);
+			
+			ResponseStructure<UserResponseDTO> responseStructure=new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+			responseStructure.setMessage("User object with id successfully deleted...and the object is shown below");
+			responseStructure.setData(userResponse);
+			
+			return new ResponseEntity<ResponseStructure<UserResponseDTO>>(responseStructure, HttpStatus.ACCEPTED);
+		}
+		
+		else
+		{
+			throw new UserNotFoundException("user with id does not exist... so cannot be deleted");
+		}
 	}
 }
