@@ -19,13 +19,14 @@ public class User
 	private String password;
 	private UserRole userRole;				//can take Enum<UserRole> ?
 	
-	@OneToMany
-	private List<Company> companyList;
+	@OneToMany(mappedBy = "user")
+	private List<Company> companyList;		//only employee can add companies
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "userType")		//only applicant can have the resume
 	private Resume resume;
+	
 	@OneToMany
-	private List<JobApplication> jobApplicationList;
+	private List<JobApplication> jobApplicationList;		//only applicant can have the resume
 	
 	public int getUserId() {
 		return userId;

@@ -13,7 +13,7 @@ public class Resume
 	private String jobRole;
 	
 	@OneToOne
-	private User user;
+	private User userType;
 	
 	public int getResumeId() {
 		return resumeId;
@@ -32,6 +32,12 @@ public class Resume
 	}
 	public void setJobRole(String jobRole) {
 		this.jobRole = jobRole;
+	}
+	public User getUserType() {
+		return userType;
+	}
+	public void setUserType(User userType) {
+		this.userType = userType;
 	}
 	
 	
