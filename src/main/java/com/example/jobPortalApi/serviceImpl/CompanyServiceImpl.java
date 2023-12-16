@@ -113,4 +113,54 @@ public class CompanyServiceImpl implements CompanyService
 			throw new CompanyNotFoundException("company with given id does not exist");
 		}
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<String>> updateCompany(CompanyRequestDTO companyRequestDTO, int userId,BusinessType businessType,int companyId) 
+	{
+		Optional<User> optionalUser = userRepo.findById(userId);
+		
+		if(optionalUser.isPresent())
+		{
+			User user = optionalUser.get();
+			
+			if(user.getUserRole()==UserRole.EMPLOYER)
+			{
+				Optional<Company> optionalCompany = companyRepo.findById(companyId);
+				
+				if(optionalCompany.isPresent())
+				{
+					Company company=optionalCompany.get();
+					
+					company.setCompanyName(companyRequestDTO.getCompanyName());
+					company.setFoundedDate(companyRequestDTO.getFoundedDate());
+					company.setContactEmail(companyRequestDTO.getContactEmail());
+					company.setContactPhNum(companyRequestDTO.getContactPhNum());
+					
+					company.setUser(user);
+					company.setBusinessType(businessType);
+					
+					companyRepo.save(company);
+					
+					ResponseStructure<String> responseStructure=new ResponseStructure<>();
+					responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+					responseStructure.setMessage("Company object found successfully");
+					responseStructure.setData("Company object successfully updated");
+
+					return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
+				}
+				else
+				{
+					throw new CompanyNotFoundException("company with id does not exist");
+				}	
+			}
+			else
+			{
+				throw new InvalidUserException("invalid user role ...only authorized persons can updated companies");
+			}
+		}
+		else
+		{
+			throw new UserNotFoundException("given user does not exist in the user database");
+		}
+	}
 }

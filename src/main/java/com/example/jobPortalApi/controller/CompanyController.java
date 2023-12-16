@@ -30,4 +30,10 @@ public class CompanyController
 	{
 		return companyService.findById(id);
 	}
+	
+	@RequestMapping (value = "/users/{userId}/Businesstype/{businessType}/companies/{companyId}" , method = RequestMethod.PUT)
+	public ResponseEntity<ResponseStructure<String>> updateComapy(@PathVariable int userId,@PathVariable BusinessType businessType,@RequestBody CompanyRequestDTO companyRequestDTO,@PathVariable int companyId)
+	{
+		return companyService.updateCompany(companyRequestDTO,userId,businessType,companyId);
+	}
 }
