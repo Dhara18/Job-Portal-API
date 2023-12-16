@@ -16,6 +16,7 @@ public class CompanyResponseDTO
 	private String contactEmail;
 	private long contactPhNum;
 	private String website;
+	
 	public int getCompanyId() {
 		return companyId;
 	}

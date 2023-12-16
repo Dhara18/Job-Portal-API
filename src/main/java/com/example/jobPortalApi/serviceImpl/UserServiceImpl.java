@@ -14,6 +14,7 @@ import com.example.jobPortalApi.requestDTO.UserRequestDTO;
 import com.example.jobPortalApi.responseDTO.UserResponseDTO;
 import com.example.jobPortalApi.service.UserService;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.UserRole;
 
 @Service
 public class UserServiceImpl implements UserService
@@ -28,7 +29,6 @@ public class UserServiceImpl implements UserService
 		user.setUsername(userRequestDTO.getUsername());
 		user.setEmail(userRequestDTO.getEmail());
 		user.setPassword(userRequestDTO.getPassword());
-		user.setUserRole(userRequestDTO.getUserRole());
 
 		return user;
 	}
@@ -45,9 +45,10 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> addUser(UserRequestDTO userRequestDTO) 
+	public ResponseEntity<ResponseStructure<String>> addUser(UserRequestDTO userRequestDTO,UserRole userRole) 
 	{
 		User user = userRequestDTOToUser(userRequestDTO);
+		user.setUserRole(userRole);
 		userRepo.save(user);
 
 		ResponseStructure<String> responseStructure=new ResponseStructure<>();
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> updateUserById(UserRequestDTO userRequestDTO, int id) 
+	public ResponseEntity<ResponseStructure<String>> updateUserById(UserRequestDTO userRequestDTO,UserRole userRole, int id) 
 	{
 		Optional<User> optionalUser = userRepo.findById(id);	
 
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService
 			user.setUsername(userRequestDTO.getUsername());
 			user.setEmail(userRequestDTO.getEmail());
 			user.setPassword(userRequestDTO.getPassword());
-			user.setUserRole(userRequestDTO.getUserRole());
+			user.setUserRole(userRole);
 			
 			userRepo.save(user);
 			ResponseStructure<String> responseStructure=new ResponseStructure<>();

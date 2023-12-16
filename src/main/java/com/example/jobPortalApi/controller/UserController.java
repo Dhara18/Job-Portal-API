@@ -13,6 +13,7 @@ import com.example.jobPortalApi.requestDTO.UserRequestDTO;
 import com.example.jobPortalApi.responseDTO.UserResponseDTO;
 import com.example.jobPortalApi.service.UserService;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.UserRole;
 
 @RestController
 public class UserController 
@@ -20,10 +21,10 @@ public class UserController
 	@Autowired
 	UserService userService;
 	
-	@RequestMapping(value = "/users",method = RequestMethod.POST)
-	public ResponseEntity<ResponseStructure<String>> addUser(@RequestBody UserRequestDTO userRequestDTO)
+	@RequestMapping(value = "/userRole/{userRole}/users",method = RequestMethod.POST)
+	public ResponseEntity<ResponseStructure<String>> addUser(@RequestBody UserRequestDTO userRequestDTO,@PathVariable UserRole userRole)
 	{
-		return userService.addUser(userRequestDTO);
+		return userService.addUser(userRequestDTO,userRole);
 	}
 	
 	@RequestMapping(value = "/users/{id}",method = RequestMethod.GET)
@@ -32,10 +33,10 @@ public class UserController
 		return userService.findUserById(id);
 	}
 	
-	@RequestMapping(value = "/users/{id}",method = RequestMethod.PUT)
-	public ResponseEntity<ResponseStructure<String>> updateUserById(@RequestBody UserRequestDTO userRequestDTO,@PathVariable int id)
+	@RequestMapping(value = "/userRole/{userRole}/users/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<ResponseStructure<String>> updateUserById(@RequestBody UserRequestDTO userRequestDTO,@PathVariable UserRole userRole,@PathVariable int id)
 	{
-		return userService.updateUserById(userRequestDTO,id);
+		return userService.updateUserById(userRequestDTO,userRole,id);
 	}
 	
 	@RequestMapping(value = "/users/{id}",method = RequestMethod.DELETE)

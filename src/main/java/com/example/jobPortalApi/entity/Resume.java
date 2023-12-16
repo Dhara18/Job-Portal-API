@@ -1,6 +1,8 @@
 package com.example.jobPortalApi.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
@@ -8,6 +10,7 @@ import jakarta.persistence.OneToOne;
 public class Resume 
 {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int resumeId;
 	private String resumename;
 	private String jobRole;

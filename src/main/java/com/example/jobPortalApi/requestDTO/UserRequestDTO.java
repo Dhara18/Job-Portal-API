@@ -10,7 +10,6 @@ public class UserRequestDTO
 	private String username;
 	private String email;
 	private String password;
-	private UserRole userRole;
 	public String getUsername() {
 		return username;
 	}
@@ -29,12 +28,7 @@ public class UserRequestDTO
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public UserRole getUserRole() {
-		return userRole;
-	}
-	public void setUserRole(UserRole userRole) {
-		this.userRole = userRole;
-	}
+	
 	
 	
 }

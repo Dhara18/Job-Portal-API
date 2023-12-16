@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.jobPortalApi.requestDTO.CompanyRequestDTO;
 import com.example.jobPortalApi.service.CompanyService;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.BusinessType;
 
 @RestController
 public class CompanyController 
@@ -18,9 +19,9 @@ public class CompanyController
 	@Autowired
 	private CompanyService companyService;
 	
-	@RequestMapping (value = "/companies/users/{userId}" , method = RequestMethod.POST)
-	public ResponseEntity<ResponseStructure<String>> addComapy(@RequestBody CompanyRequestDTO companyRequestDTO,@PathVariable int userId)
+	@RequestMapping (value = "/users/{userId}/Businesstype/{businessType}/companies" , method = RequestMethod.POST)
+	public ResponseEntity<ResponseStructure<String>> addComapy(@PathVariable int userId,@PathVariable BusinessType businessType,@RequestBody CompanyRequestDTO companyRequestDTO)
 	{
-		return companyService.addCompany(companyRequestDTO,userId);
+		return companyService.addCompany(companyRequestDTO,userId,businessType);
 	}
 }

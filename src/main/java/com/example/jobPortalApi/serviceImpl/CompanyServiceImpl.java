@@ -17,6 +17,7 @@ import com.example.jobPortalApi.requestDTO.CompanyRequestDTO;
 import com.example.jobPortalApi.responseDTO.CompanyResponseDTO;
 import com.example.jobPortalApi.service.CompanyService;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.BusinessType;
 import com.exmple.jobPortalApi.enums.UserRole;
 
 @Service
@@ -33,7 +34,6 @@ public class CompanyServiceImpl implements CompanyService
 		Company company = new Company();
 		company.setCompanyName(companyRequestDTO.getCompanyName());
 		company.setFoundedDate(companyRequestDTO.getFoundedDate());
-		company.setBusinessType(companyRequestDTO.getBusinessType());
 		company.setContactEmail(companyRequestDTO.getContactEmail());
 		company.setContactPhNum(companyRequestDTO.getContactPhNum());
 		company.setWebsite(companyRequestDTO.getWebsite());
@@ -55,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> addCompany(CompanyRequestDTO companyRequestDTO,int userId) 
+	public ResponseEntity<ResponseStructure<String>> addCompany(CompanyRequestDTO companyRequestDTO,int userId,BusinessType businessType) 
 	{
 		Optional<User> optionalUser = userRepo.findById(userId);
 		
@@ -64,10 +64,11 @@ public class CompanyServiceImpl implements CompanyService
 			User user=optionalUser.get();
 			UserRole userRole = user.getUserRole();
 			
-			if(userRole==UserRole.EMPLOYER)
+			if(userRole==UserRole.EMPLOYER)							//EMPLOER is a static member....so calssName.memberName
 			{
 				Company company = CompantRequestDTOToCompany(companyRequestDTO);
 				company.setUser(user);
+				company.setBusinessType(businessType);
 				
 				companyRepo.save(company);
 				
