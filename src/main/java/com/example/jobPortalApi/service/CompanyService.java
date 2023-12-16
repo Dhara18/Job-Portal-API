@@ -7,5 +7,5 @@ import com.example.jobPortalApi.utility.ResponseStructure;
 
 public interface CompanyService 
 {
-	
+	public ResponseEntity<ResponseStructure<String>> addCompany(CompanyRequestDTO companyRequestDTO,int userId);
 }

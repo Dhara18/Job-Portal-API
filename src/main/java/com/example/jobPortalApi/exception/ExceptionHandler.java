@@ -20,4 +20,15 @@ public class ExceptionHandler
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
 	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(InvalidUserException.class)
+	public ResponseEntity<ErrorStructure<String>>userInvalidException(InvalidUserException invalidUserException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("Invalid user role");
+		errorStructure.setErrorData(invalidUserException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
 }
