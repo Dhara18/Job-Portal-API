@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.jobPortalApi.entity.Company;
 import com.example.jobPortalApi.entity.User;
+import com.example.jobPortalApi.exception.CompanyNotFoundException;
 import com.example.jobPortalApi.exception.InvalidUserException;
 import com.example.jobPortalApi.exception.UserNotFoundException;
 import com.example.jobPortalApi.repository.CompanyRepo;
@@ -25,10 +26,10 @@ public class CompanyServiceImpl implements CompanyService
 {
 	@Autowired
 	CompanyRepo companyRepo;
-	
+
 	@Autowired
 	UserRepo userRepo;
-	
+
 	public Company CompantRequestDTOToCompany(CompanyRequestDTO companyRequestDTO)
 	{
 		Company company = new Company();
@@ -37,10 +38,10 @@ public class CompanyServiceImpl implements CompanyService
 		company.setContactEmail(companyRequestDTO.getContactEmail());
 		company.setContactPhNum(companyRequestDTO.getContactPhNum());
 		company.setWebsite(companyRequestDTO.getWebsite());
-		
+
 		return company;
 	}
-	
+
 	public CompanyResponseDTO CompanyToCompanyResponseDTO(Company company)
 	{
 		CompanyResponseDTO companyResponseDTO= new CompanyResponseDTO();
@@ -58,25 +59,25 @@ public class CompanyServiceImpl implements CompanyService
 	public ResponseEntity<ResponseStructure<String>> addCompany(CompanyRequestDTO companyRequestDTO,int userId,BusinessType businessType) 
 	{
 		Optional<User> optionalUser = userRepo.findById(userId);
-		
+
 		if(optionalUser.isPresent())
 		{
 			User user=optionalUser.get();
 			UserRole userRole = user.getUserRole();
-			
+
 			if(userRole==UserRole.EMPLOYER)							//EMPLOER is a static member....so calssName.memberName
 			{
 				Company company = CompantRequestDTOToCompany(companyRequestDTO);
 				company.setUser(user);
 				company.setBusinessType(businessType);
-				
+
 				companyRepo.save(company);
-				
+
 				ResponseStructure<String> responseStructure=new ResponseStructure<>();
 				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 				responseStructure.setMessage("Company object saved successfully");
 				responseStructure.setData("Company object successfully added");
-				
+
 				return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
 			}
 			else
@@ -87,6 +88,29 @@ public class CompanyServiceImpl implements CompanyService
 		else
 		{
 			throw new UserNotFoundException("given user does not exist in the user database");
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<CompanyResponseDTO>> findById(int id) 
+	{
+		Optional<Company> optionalCompany = companyRepo.findById(id);
+
+		if(optionalCompany.isPresent())
+		{
+			Company company = optionalCompany.get();
+			CompanyResponseDTO companyResponseDTO = CompanyToCompanyResponseDTO(company);
+
+			ResponseStructure<CompanyResponseDTO> responseStructure=new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("Company object saved successfully");
+			responseStructure.setData(companyResponseDTO);
+			
+			return new ResponseEntity<ResponseStructure<CompanyResponseDTO>>(responseStructure, HttpStatus.FOUND);
+		}
+		else
+		{
+			throw new CompanyNotFoundException("company with given id does not exist");
 		}
 	}
 }
