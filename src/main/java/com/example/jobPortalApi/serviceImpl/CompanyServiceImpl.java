@@ -105,7 +105,7 @@ public class CompanyServiceImpl implements CompanyService
 			responseStructure.setStatusCode(HttpStatus.FOUND.value());
 			responseStructure.setMessage("Company object saved successfully");
 			responseStructure.setData(companyResponseDTO);
-			
+
 			return new ResponseEntity<ResponseStructure<CompanyResponseDTO>>(responseStructure, HttpStatus.FOUND);
 		}
 		else
@@ -118,29 +118,29 @@ public class CompanyServiceImpl implements CompanyService
 	public ResponseEntity<ResponseStructure<String>> updateCompany(CompanyRequestDTO companyRequestDTO, int userId,BusinessType businessType,int companyId) 
 	{
 		Optional<User> optionalUser = userRepo.findById(userId);
-		
+
 		if(optionalUser.isPresent())
 		{
 			User user = optionalUser.get();
-			
+
 			if(user.getUserRole()==UserRole.EMPLOYER)
 			{
 				Optional<Company> optionalCompany = companyRepo.findById(companyId);
-				
+
 				if(optionalCompany.isPresent())
 				{
 					Company company=optionalCompany.get();
-					
+
 					company.setCompanyName(companyRequestDTO.getCompanyName());
 					company.setFoundedDate(companyRequestDTO.getFoundedDate());
 					company.setContactEmail(companyRequestDTO.getContactEmail());
 					company.setContactPhNum(companyRequestDTO.getContactPhNum());
-					
+
 					company.setUser(user);
 					company.setBusinessType(businessType);
-					
+
 					companyRepo.save(company);
-					
+
 					ResponseStructure<String> responseStructure=new ResponseStructure<>();
 					responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 					responseStructure.setMessage("Company object found successfully");
@@ -150,7 +150,7 @@ public class CompanyServiceImpl implements CompanyService
 				}
 				else
 				{
-					throw new CompanyNotFoundException("company with id does not exist");
+					throw new CompanyNotFoundException("company with id does not exist...so cannot update");
 				}	
 			}
 			else
@@ -163,4 +163,50 @@ public class CompanyServiceImpl implements CompanyService
 			throw new UserNotFoundException("given user does not exist in the user database");
 		}
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<CompanyResponseDTO>> deleteById(int userId, int companyId) 
+	{
+		Optional<User> optionalUser = userRepo.findById(userId);
+
+		if(optionalUser.isPresent())
+		{
+			User user = optionalUser.get();
+
+			if(user.getUserRole()==UserRole.EMPLOYER)
+			{
+				Optional<Company> optionalCompany = companyRepo.findById(companyId);
+
+				if(optionalCompany.isPresent())
+				{
+					Company company=optionalCompany.get();
+
+					CompanyResponseDTO companyResponseDTO = CompanyToCompanyResponseDTO(company);
+
+					companyRepo.deleteById(companyId);
+
+					ResponseStructure<CompanyResponseDTO> responseStructure=new ResponseStructure<>();
+					responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+					responseStructure.setMessage("Company object deleted successfully by user with Id "+userId);
+					responseStructure.setData(companyResponseDTO);
+
+					return new ResponseEntity<ResponseStructure<CompanyResponseDTO>>(responseStructure, HttpStatus.ACCEPTED);
+				}
+				else
+				{
+					throw new CompanyNotFoundException("company with id does not exist...so cannot delete");
+				}	
+			}
+			else
+			{
+				throw new InvalidUserException("invalid user role ...only authorized persons can delete companies");
+			}
+		}
+		else
+		{
+			throw new UserNotFoundException("given user does not exist in the user database");
+		}
+	}
+
+
 }

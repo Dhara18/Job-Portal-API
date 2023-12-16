@@ -12,4 +12,5 @@ public interface CompanyService
 	public ResponseEntity<ResponseStructure<String>> addCompany(CompanyRequestDTO companyRequestDTO,int userId,BusinessType businessType);
 	public ResponseEntity<ResponseStructure<CompanyResponseDTO>>findById(int id);
 	public ResponseEntity<ResponseStructure<String>> updateCompany(CompanyRequestDTO companyRequestDTO,int userId,BusinessType businessType,int companyId);
+	public ResponseEntity<ResponseStructure<CompanyResponseDTO>>deleteById(int userId,int companyId);
 }

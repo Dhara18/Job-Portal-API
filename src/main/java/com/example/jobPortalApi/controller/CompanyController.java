@@ -36,4 +36,10 @@ public class CompanyController
 	{
 		return companyService.updateCompany(companyRequestDTO,userId,businessType,companyId);
 	}
+	
+	@RequestMapping (value = "/users/{userId}/companies/{companyId}" , method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<CompanyResponseDTO>>deleteById(@PathVariable int userId,@PathVariable int companyId)
+	{
+		return companyService.deleteById(userId,companyId);
+	}
 }
