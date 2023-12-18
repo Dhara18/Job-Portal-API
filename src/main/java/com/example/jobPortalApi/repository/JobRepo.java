@@ -9,6 +9,9 @@ import com.example.jobPortalApi.entity.Job;
 
 public interface JobRepo extends JpaRepository<Job, Integer> 
 {
-	@Query("select r from Job r where r.jobTitle LIKE ?1%")
+	@Query("select j from Job j where j.jobTitle LIKE ?1%")
 	public List<Job> findByTitle(String jobTitle);
+	
+	@Query("select j from Job j where j.company.companyId=?1")		//because like cannot take string
+	public List<Job> findByCompanyId(int id);
 }

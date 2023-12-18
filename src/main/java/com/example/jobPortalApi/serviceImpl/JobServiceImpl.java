@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.example.jobPortalApi.entity.Company;
 import com.example.jobPortalApi.entity.Job;
 import com.example.jobPortalApi.exception.CompanyNotFoundException;
-import com.example.jobPortalApi.exception.InvalidBusinessTypeException;
 import com.example.jobPortalApi.exception.JobNotFoundException;
 import com.example.jobPortalApi.repository.CompanyRepo;
 import com.example.jobPortalApi.repository.JobRepo;
@@ -22,7 +21,6 @@ import com.example.jobPortalApi.requestDTO.JobRequestDTO;
 import com.example.jobPortalApi.responseDTO.JobResponceDTO;
 import com.example.jobPortalApi.service.JobService;
 import com.example.jobPortalApi.utility.ResponseStructure;
-import com.exmple.jobPortalApi.enums.BusinessType;
 
 @Service
 public class JobServiceImpl implements JobService
@@ -132,6 +130,47 @@ public class JobServiceImpl implements JobService
 		}
 		
 		
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findJobByCompanyId(int companyId) 
+	{
+		Optional<Company> optionalCompany = companyRepo.findById(companyId);
+		
+		if(optionalCompany.isPresent())
+		{
+			List<Job> jobList = jobRepo.findByCompanyId(companyId);
+			
+			List<JobResponceDTO> jobResponceDTOList=new ArrayList<>();
+			Map<String,String> optionalJob=new HashMap<>();
+			
+			String url=null;
+			for(Job job:jobList)
+			{
+				JobResponceDTO jobResponceDTO=jobToJobResponceDTO(job);
+				
+				url="/companies/"+companyId;
+				optionalJob.put("companies", url);
+				
+				jobResponceDTO.setOptions(optionalJob);
+				
+				jobResponceDTOList.add(jobResponceDTO);
+				
+				url=null;
+			}
+			
+			ResponseStructure<List<JobResponceDTO>> responseStructure= new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("job entities with company id found successfully");
+			responseStructure.setData(jobResponceDTOList);
+			
+			return new ResponseEntity<ResponseStructure<List<JobResponceDTO>>>(responseStructure, HttpStatus.FOUND);
+		}
+		
+		else
+		{
+			throw new JobNotFoundException("job with given company id not found");
+		}
 	}
 
 
