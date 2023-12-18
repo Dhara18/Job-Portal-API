@@ -1,5 +1,7 @@
 package com.example.jobPortalApi.serviceImpl;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +102,14 @@ public class CompanyServiceImpl implements CompanyService
 		{
 			Company company = optionalCompany.get();
 			CompanyResponseDTO companyResponseDTO = CompanyToCompanyResponseDTO(company);
+			
+			Map<String,String> companyOptions= new HashMap<>();
+			
+			String url=null;
+			url="/users/"+company.getUser().getUserId();
+			companyOptions.put("users",url);
+			
+			companyResponseDTO.setOption(companyOptions);
 
 			ResponseStructure<CompanyResponseDTO> responseStructure=new ResponseStructure<>();
 			responseStructure.setStatusCode(HttpStatus.FOUND.value());
@@ -182,6 +192,13 @@ public class CompanyServiceImpl implements CompanyService
 					Company company=optionalCompany.get();
 
 					CompanyResponseDTO companyResponseDTO = CompanyToCompanyResponseDTO(company);
+					
+					Map<String,String> userOptions=new HashMap<>();
+					String url=null;
+					url="/users/"+company.getUser().getUserId();
+					userOptions.put("users", url);
+					
+					companyResponseDTO.setOption(userOptions);
 
 					companyRepo.deleteById(companyId);
 

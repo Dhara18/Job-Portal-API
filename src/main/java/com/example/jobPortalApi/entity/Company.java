@@ -1,6 +1,7 @@
 package com.example.jobPortalApi.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.exmple.jobPortalApi.enums.BusinessType;
 
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Company 
@@ -25,6 +27,9 @@ public class Company
 	
 	@ManyToOne
 	private User user;
+	
+	@OneToMany (mappedBy = "company")
+	private List<Job> jobList;
 
 	public int getCompanyId() {
 		return companyId;
@@ -88,6 +93,14 @@ public class Company
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Job> getJobList() {
+		return jobList;
+	}
+
+	public void setJobList(List<Job> jobList) {
+		this.jobList = jobList;
 	}
 	
 	

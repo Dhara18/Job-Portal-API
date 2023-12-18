@@ -2,8 +2,6 @@ package com.example.jobPortalApi.requestDTO;
 
 import org.springframework.stereotype.Component;
 
-import com.exmple.jobPortalApi.enums.UserRole;
-
 @Component
 public class UserRequestDTO 
 {

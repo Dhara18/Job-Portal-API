@@ -1,6 +1,7 @@
 package com.example.jobPortalApi.responseDTO;
 
 import java.sql.Date;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,14 @@ public class CompanyResponseDTO
 	private long contactPhNum;
 	private String website;
 	
+	private Map<String,String> option;
+	
+	public Map<String, String> getOption() {
+		return option;
+	}
+	public void setOption(Map<String, String> option) {
+		this.option = option;
+	}
 	public int getCompanyId() {
 		return companyId;
 	}

@@ -21,6 +21,29 @@ public class ExceptionHandler
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
 	}
 	
+	@org.springframework.web.bind.annotation.ExceptionHandler(CompanyNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> userDataNotFoundException(CompanyNotFoundException companyNotFoundException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("user data not found");
+		errorStructure.setErrorData(companyNotFoundException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(JobNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>>jobNotFoundException(JobNotFoundException jobNotFoundException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("Invalid user role");
+		errorStructure.setErrorData(jobNotFoundException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
 	@org.springframework.web.bind.annotation.ExceptionHandler(InvalidUserException.class)
 	public ResponseEntity<ErrorStructure<String>>userInvalidException(InvalidUserException invalidUserException)
 	{
@@ -28,6 +51,17 @@ public class ExceptionHandler
 		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
 		errorStructure.setMessage("Invalid user role");
 		errorStructure.setErrorData(invalidUserException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(InvalidBusinessTypeException.class)
+	public ResponseEntity<ErrorStructure<String>>businessTypeInvalidException(InvalidBusinessTypeException invalidBusinessTypeException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("Invalid user role");
+		errorStructure.setErrorData(invalidBusinessTypeException.getMessage());
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
 	}
