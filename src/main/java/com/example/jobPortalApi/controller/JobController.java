@@ -39,4 +39,10 @@ public class JobController
 	{
 		return jobService.findJobByCompanyId(companyId);
 	}
+	
+	@RequestMapping(value = "/jobsByLocation/{jobLocation}", method = RequestMethod.GET)
+	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findByJobLocation(@PathVariable String jobLocation)
+	{
+		return jobService.findByJobLocation(jobLocation);
+	}
 }
