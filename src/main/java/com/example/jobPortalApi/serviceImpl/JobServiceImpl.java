@@ -220,12 +220,12 @@ public class JobServiceImpl implements JobService
 	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId, int companyId,JobRequestDTO jobRequestDto) 
 	{
 		Optional<Company> opytionalCompany = companyRepo.findById(companyId);
-		
+
 		if(opytionalCompany.isPresent())
 		{
-			
+
 			Optional<Job> optionalJob = jobRepo.findById(jobId);
-			
+
 			if(optionalJob.isPresent())
 			{
 				Job job = optionalJob.get();
@@ -234,18 +234,18 @@ public class JobServiceImpl implements JobService
 				job.setJobLocation(jobRequestDto.getJobLocation());
 				job.setJobSkills(jobRequestDto.getJobSkills());
 				job.setJobExpirienceRequired(jobRequestDto.getJobExpirienceRequired());
-				
+
 				jobRepo.save(job);
-				
+
 				ResponseStructure<String> responseStructure= new ResponseStructure<>();
 				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 				responseStructure.setMessage("job entity is updated successfully");
 				responseStructure.setData("job entity is updated to data base");
 
 				return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
-				
+
 			}
-			
+
 			else
 			{
 				throw new JobNotFoundException("job does not exist with given id to update");
@@ -253,7 +253,49 @@ public class JobServiceImpl implements JobService
 		}
 		else
 		{
-			throw new CompanyNotFoundException("there is no company to uodate the job");
+			throw new CompanyNotFoundException("there is no company to update the job");
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<JobResponceDTO>> deleteJobByCompanyId(int companyId, int jobId) 
+	{
+		Optional<Company> opytionalCompany = companyRepo.findById(companyId);
+
+		if(opytionalCompany.isPresent())
+		{
+
+			Optional<Job> optionalJob = jobRepo.findById(jobId);
+			String url=null;
+			if(optionalJob.isPresent())
+			{
+				Map<String,String> options= new HashMap<>();
+				url="/companies/"+companyId;
+				options.put("companies", url);
+
+				Job job = optionalJob.get();
+				JobResponceDTO jobResponceDTO=jobToJobResponceDTO(job);
+				jobResponceDTO.setOptions(options);
+
+				jobRepo.deleteById(jobId);
+
+				ResponseStructure<JobResponceDTO> responseStructure= new ResponseStructure<>();
+				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+				responseStructure.setMessage("job entity is deleted successfully");
+				responseStructure.setData(jobResponceDTO);
+
+				return new ResponseEntity<ResponseStructure<JobResponceDTO>>(responseStructure, HttpStatus.ACCEPTED);
+
+			}
+
+			else
+			{
+				throw new JobNotFoundException("job does not exist with given id to delete");
+			}
+		}
+		else
+		{
+			throw new CompanyNotFoundException("there is no company to delete the job");
 		}
 	}
 

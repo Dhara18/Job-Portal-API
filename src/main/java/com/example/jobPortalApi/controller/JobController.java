@@ -50,4 +50,10 @@ public class JobController
 	{
 		return jobService.updateJobById(jobId,companyId,jobRequestDto);
 	}
+	
+	@RequestMapping(value = "/companies/{companyId}/jobs/{jobId}", method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<JobResponceDTO>> deleteJobByCompanyId(@PathVariable int companyId,@PathVariable int jobId)
+	{
+		return jobService.deleteJobByCompanyId(companyId,jobId);
+	}
 }
