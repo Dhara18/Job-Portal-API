@@ -14,7 +14,6 @@ import com.example.jobPortalApi.requestDTO.JobRequestDTO;
 import com.example.jobPortalApi.responseDTO.JobResponceDTO;
 import com.example.jobPortalApi.service.JobService;
 import com.example.jobPortalApi.utility.ResponseStructure;
-import com.exmple.jobPortalApi.enums.BusinessType;
 
 @RestController
 public class JobController 
@@ -44,5 +43,11 @@ public class JobController
 	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findByJobLocation(@PathVariable String jobLocation)
 	{
 		return jobService.findByJobLocation(jobLocation);
+	}
+	
+	@RequestMapping(value = "/Companies/{companyId}/jobs/{jobId}", method = RequestMethod.PUT)		
+	public ResponseEntity<ResponseStructure<String>> updateJobById(@PathVariable int jobId,@PathVariable int companyId,@RequestBody JobRequestDTO jobRequestDto)
+	{
+		return jobService.updateJobById(jobId,companyId,jobRequestDto);
 	}
 }

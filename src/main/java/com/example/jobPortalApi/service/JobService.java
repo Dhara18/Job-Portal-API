@@ -17,4 +17,6 @@ public interface JobService
 	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findJobByCompanyId(int companyId);
 	
 	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findByJobLocation(String jobLocation);
+	
+	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId,int companyId,JobRequestDTO jobRequestDto);
 }

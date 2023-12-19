@@ -216,5 +216,46 @@ public class JobServiceImpl implements JobService
 		}
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId, int companyId,JobRequestDTO jobRequestDto) 
+	{
+		Optional<Company> opytionalCompany = companyRepo.findById(companyId);
+		
+		if(opytionalCompany.isPresent())
+		{
+			
+			Optional<Job> optionalJob = jobRepo.findById(jobId);
+			
+			if(optionalJob.isPresent())
+			{
+				Job job = optionalJob.get();
+				job.setJobTitle(jobRequestDto.getJobTitle());
+				job.setJobPackage(jobRequestDto.getJobPackage());
+				job.setJobLocation(jobRequestDto.getJobLocation());
+				job.setJobSkills(jobRequestDto.getJobSkills());
+				job.setJobExpirienceRequired(jobRequestDto.getJobExpirienceRequired());
+				
+				jobRepo.save(job);
+				
+				ResponseStructure<String> responseStructure= new ResponseStructure<>();
+				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+				responseStructure.setMessage("job entity is updated successfully");
+				responseStructure.setData("job entity is updated to data base");
+
+				return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
+				
+			}
+			
+			else
+			{
+				throw new JobNotFoundException("job does not exist with given id to update");
+			}
+		}
+		else
+		{
+			throw new CompanyNotFoundException("there is no company to uodate the job");
+		}
+	}
+
 
 }
