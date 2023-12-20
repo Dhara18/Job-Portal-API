@@ -12,36 +12,31 @@ public class Resume
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int resumeId;
-	private String resumename;
-	private String jobRole;
+	private String objective;
 	
 	@OneToOne
 	private User userType;
 	
-	public int getResumeId() {
-		return resumeId;
-	}
-	public void setResumeId(int resumeId) {
-		this.resumeId = resumeId;
-	}
-	public String getResumename() {
-		return resumename;
-	}
-	public void setResumename(String resumename) {
-		this.resumename = resumename;
-	}
-	public String getJobRole() {
-		return jobRole;
-	}
-	public void setJobRole(String jobRole) {
-		this.jobRole = jobRole;
-	}
 	public User getUserType() {
 		return userType;
 	}
 	public void setUserType(User userType) {
 		this.userType = userType;
 	}
+	public int getResumeId() {
+		return resumeId;
+	}
+	public void setResumeId(int resumeId) {
+		this.resumeId = resumeId;
+	}
+	public String getObjective() {
+		return objective;
+	}
+	public void setObjective(String objective) {
+		this.objective = objective;
+	}
+	
+	
 	
 	
 }
