@@ -30,4 +30,10 @@ public class ResumeController
 	{
 		return resumeService.findResume(resumeId);
 	}
+	
+	@RequestMapping(value = "/users/{userId}/resume/{resumeId}",method = RequestMethod.PUT)
+	public ResponseEntity<ResponseStructure<String>> updateResume(@PathVariable int userId,@PathVariable int resumeId,@RequestBody ResumeRequestDTO resumeRequestDTO)
+	{
+		return resumeService.updateResume(userId,resumeId, resumeRequestDTO);
+	}
 }
