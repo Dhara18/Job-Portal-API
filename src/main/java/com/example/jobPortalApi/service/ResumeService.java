@@ -13,4 +13,6 @@ public interface ResumeService
 	public ResponseEntity<ResponseStructure<ResumeResponseDTO>> findResume(int resumeId);
 	
 	public ResponseEntity<ResponseStructure<String>> updateResume(int userId,int resumeId,ResumeRequestDTO resumeRequestDTO);
+	
+	public ResponseEntity<ResponseStructure<ResumeResponseDTO>> deleteResume(int userId,int resumeId);
 }

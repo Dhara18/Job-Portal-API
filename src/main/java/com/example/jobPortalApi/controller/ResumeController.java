@@ -31,9 +31,9 @@ public class ResumeController
 		return resumeService.findResume(resumeId);
 	}
 	
-	@RequestMapping(value = "/users/{userId}/resume/{resumeId}",method = RequestMethod.PUT)
-	public ResponseEntity<ResponseStructure<String>> updateResume(@PathVariable int userId,@PathVariable int resumeId,@RequestBody ResumeRequestDTO resumeRequestDTO)
+	@RequestMapping(value = "/users/{userId}/resume/{resumeId}",method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<ResumeResponseDTO>> deleteResume(@PathVariable int userId,@PathVariable int resumeId)
 	{
-		return resumeService.updateResume(userId,resumeId, resumeRequestDTO);
+		return resumeService.deleteResume(userId,resumeId);
 	}
 }

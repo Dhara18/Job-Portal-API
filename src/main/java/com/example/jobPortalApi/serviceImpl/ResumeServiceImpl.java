@@ -133,4 +133,45 @@ public class ResumeServiceImpl implements ResumeService
 			throw new InvalidUserException("user has to be applicant to add the resume");
 		}
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<ResumeResponseDTO>> deleteResume(int userId, int resumeId) 
+	{
+		Optional<User> optionalUser = userRepo.findById(userId);
+		User user = optionalUser.get();
+
+		if(user.getUserRole()==UserRole.APPLICANT)
+		{
+			Optional<Resume> resumeOptional = resumeRepo.findById(resumeId);
+			if(resumeOptional.isPresent())
+			{
+				Resume resume=resumeOptional.get();
+				ResumeResponseDTO resumeResponseDTO = resumeToResumeResponceDTO(resume);
+				
+				Map<String,String> resumeOptions= new HashMap<>();
+				String url="/users/";
+				resumeOptions.put("users", url+resume.getUserType().getUserId());
+				
+				resumeResponseDTO.setOptions(resumeOptions);
+				
+				resumeRepo.deleteById(resumeId);
+				
+				ResponseStructure<ResumeResponseDTO> responseStructure=new ResponseStructure<>();
+				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+				responseStructure.setMessage("Resume object successfully deleted");
+				responseStructure.setData(resumeResponseDTO);
+				return new ResponseEntity<ResponseStructure<ResumeResponseDTO>>(responseStructure, HttpStatus.ACCEPTED);
+			}
+			
+			else
+			{
+				throw new ResumeNotFoundException("resume with id not present");
+			}
+			
+		}
+		else
+		{
+			throw new InvalidUserException("user has to be applicant to delete the resume");
+		}
+	}
 }
