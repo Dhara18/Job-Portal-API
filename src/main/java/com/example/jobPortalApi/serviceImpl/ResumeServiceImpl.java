@@ -1,6 +1,8 @@
 package com.example.jobPortalApi.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,10 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.jobPortalApi.entity.Resume;
+import com.example.jobPortalApi.entity.Skills;
 import com.example.jobPortalApi.entity.User;
 import com.example.jobPortalApi.exception.InvalidUserException;
 import com.example.jobPortalApi.exception.ResumeNotFoundException;
+import com.example.jobPortalApi.exception.SkillNotFoundException;
 import com.example.jobPortalApi.repository.ResumeRepo;
+import com.example.jobPortalApi.repository.SkillRepo;
 import com.example.jobPortalApi.repository.UserRepo;
 import com.example.jobPortalApi.requestDTO.ResumeRequestDTO;
 import com.example.jobPortalApi.responseDTO.ResumeResponseDTO;
@@ -29,6 +34,10 @@ public class ResumeServiceImpl implements ResumeService
 
 	@Autowired
 	UserRepo userRepo;
+	
+	@Autowired
+	SkillRepo skillRepo;
+	
 
 	public Resume resumeRequestDtoToResume(ResumeRequestDTO resumeRequestDTO)
 	{
@@ -104,10 +113,14 @@ public class ResumeServiceImpl implements ResumeService
 	{
 		Optional<User> optionalUser = userRepo.findById(userId);
 		User user = optionalUser.get();
+		
+		System.out.println("11111111");
 
 		if(user.getUserRole()==UserRole.APPLICANT)
 		{
 			Optional<Resume> resumeOptional = resumeRepo.findById(resumeId);
+			
+			System.out.println("2222222");
 			if(resumeOptional.isPresent())
 			{
 				Resume resume=resumeOptional.get();
@@ -158,7 +171,7 @@ public class ResumeServiceImpl implements ResumeService
 				
 				ResponseStructure<ResumeResponseDTO> responseStructure=new ResponseStructure<>();
 				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
-				responseStructure.setMessage("Resume object successfully deleted");
+				responseStructure.setMessage("Resume object successfully deleted by"+userId);
 				responseStructure.setData(resumeResponseDTO);
 				return new ResponseEntity<ResponseStructure<ResumeResponseDTO>>(responseStructure, HttpStatus.ACCEPTED);
 			}
@@ -172,6 +185,43 @@ public class ResumeServiceImpl implements ResumeService
 		else
 		{
 			throw new InvalidUserException("user has to be applicant to delete the resume");
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<ResumeResponseDTO>>> findResumeBySkillName(String skillName) 
+	{
+		Skills skill=skillRepo.findSkillByName(skillName);
+		List<Resume> resumeList = resumeRepo.findAll();					//because in the extends JPA repository specified <Resume> in the argument
+		
+		List<ResumeResponseDTO> resumeListBySkill= new ArrayList<>();
+		
+		if(skill!=null)
+		{
+			for(Resume resume:resumeList)
+			{
+				List<Skills> skillList = resume.getListSkill();
+				
+				for(Skills skillObj:skillList)
+				{
+					if(skillObj.getSkill().equals(skill.getSkill()))
+					{
+						resumeListBySkill.add(resumeToResumeResponceDTO(resume));
+					}			//can write method in the repository..each skill has to be passed to the method so that it can return resume...
+				}
+				
+			}
+			
+			ResponseStructure<List<ResumeResponseDTO>> responseStructure=new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("Resume objects successfully found");
+			responseStructure.setData(resumeListBySkill);
+			return new ResponseEntity<ResponseStructure<List<ResumeResponseDTO>>>(responseStructure, HttpStatus.FOUND);
+			
+		}
+		else
+		{
+			throw new SkillNotFoundException("entered skill doesnot exist in  the database..please enter the valid skill");
 		}
 	}
 }
