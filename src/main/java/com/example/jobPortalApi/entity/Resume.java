@@ -61,8 +61,11 @@ public class Resume
 	public void setObjective(String objective) {
 		this.objective = objective;
 	}
-	
-	
-	
+	public List<Experience> getExperince() {
+		return experince;
+	}
+	public void setExperince(List<Experience> experince) {
+		this.experince = experince;
+	}
 	
 }
