@@ -27,6 +27,9 @@ public class Resume
 	@OneToMany(mappedBy = "resume")
 	private List<Project> projectList;
 	
+	@OneToMany(mappedBy = "AssocicatedResume")
+	private List<Experience> experince;
+	
 	
 	public List<Project> getProjectList() {
 		return projectList;

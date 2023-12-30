@@ -17,7 +17,7 @@ public class Job
 	private String jobTitle;
 	private long jobPackage;
 	private String jobLocation;
-	private List<String> jobSkills;
+	private List<String> jobSkills;		//@ElementCollection should be added on top of list of strings
 	private String jobExpirienceRequired;
 	
 	@ManyToOne

@@ -52,7 +52,7 @@ public class ResumeServiceImpl implements ResumeService
 		ResumeResponseDTO resumeResponseDTO= new ResumeResponseDTO();
 		resumeResponseDTO.setResumeId(resume.getResumeId());
 		resumeResponseDTO.setObjective(resume.getObjective());
-
+		resumeResponseDTO.setListSkill(resume.getListSkill());
 		return resumeResponseDTO;
 	}
 

@@ -258,6 +258,8 @@ public class SkillServiceImpl implements SkillService
 				String url="/resume"+resume.getUserType().getUserId();
 				urlList.add(url);
 
+				resumeRepo.save(resume);
+				
 				List<Skills> skillList = resume.getListSkill();
 
 //				for(Skills skills : skillList)
@@ -267,18 +269,25 @@ public class SkillServiceImpl implements SkillService
 //						skillList.remove(skills);
 //					}
 //				}														//throws concurrent modification exception
-				Iterator<Skills> iterator = skillList.iterator();
-				while(iterator.hasNext())
+//				Iterator<Skills> iterator = skillList.iterator();
+//				while(iterator.hasNext())
+//				{
+//					Skills skills = iterator.next();
+//
+//					if(skills.getSkill().equals(skill))
+//					{
+//						skillList.remove(skills);
+//					}
+//				}
+
+				// both iterator and for each loop does not work....gives concurrent modification exception
+				
+				System.out.println(skillList.contains(skillObj));
+				
+				if(skillList.contains(skillObj))
 				{
-					Skills skills = iterator.next();
-
-					if(skills.getSkill().equals(skill))
-					{
-						skillList.remove(skills);
-					}
+					skillList.remove(skillObj);
 				}
-
-				resumeRepo.save(resume);
 			}
 
 			skillRepo.delete(skillObj);
