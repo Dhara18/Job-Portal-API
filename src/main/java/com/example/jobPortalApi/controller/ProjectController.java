@@ -34,4 +34,10 @@ public class ProjectController
 		return projectService.findProject(resumeId);
 	}
 	
+	@RequestMapping(value = "/resumes/{resumeId}/projects/{projectName}",method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<ProjectResponseDTO>> deleteProject(@PathVariable int resumeId,@PathVariable String projectName)
+	{
+		return projectService.deleteProject(resumeId,projectName);
+	}
+	
 }

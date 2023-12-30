@@ -14,4 +14,5 @@ public interface ProjectService
 {
 	public ResponseEntity<ResponseStructure<String>> addProject(@RequestBody ProjectRequestDTO projectRequestDTO,@PathVariable int resumeId);
 	public ResponseEntity<ResponseStructure<List<ProjectResponseDTO>>> findProject(@PathVariable int resumeId);
+	public ResponseEntity<ResponseStructure<ProjectResponseDTO>> deleteProject(@PathVariable int resumeId,@PathVariable String projectName);
 }

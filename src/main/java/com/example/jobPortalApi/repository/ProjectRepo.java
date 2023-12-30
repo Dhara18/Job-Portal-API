@@ -11,4 +11,7 @@ public interface ProjectRepo extends JpaRepository<Project, Integer>
 {
 	@Query("select j from Project j where j.resume.resumeId=?1")
 	public List<Project> findByresumeId(int id);
+	
+	@Query("select j from Project j where j.projectName LIKE ?1%")
+	public List<Project> findByProjetName(String name);
 }
