@@ -65,28 +65,65 @@ public class Experience
 		this.jobStatus = jobStatus;
 	}
 
-	public LocalDate getStartTime() {
+	public LocalDate getStartTime() 
+	{
 		return startTime;
 	}
 
-	public void setStartTime(LocalDate startTime) {
+	public void setStartTime(LocalDate startTime) 
+	{
 		this.startTime = startTime;
+		if(endTime!=null)
+		{
+			setYearsOfExperience();
+		}
 	}
 
 	public LocalDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(LocalDate endTime) {
-		this.endTime = endTime;
+	public void setEndTime(LocalDate endTime) 
+	{
+		if(jobStatus==true)
+		{
+			this.endTime =null;
+			
+			if(getStartTime()!=null)
+			{
+				setYearsOfExperience();
+			}
+		}
+		else
+		{
+			this.endTime = endTime;
+			
+			if(getStartTime()!=null)
+			{
+				setYearsOfExperience();
+			}
+		}
 	}
 
 	public float getYearsOfExperience() {
 		return yearsOfExperience;
 	}
 
-	public void setYearsOfExperience(float yearsOfExperience) {
-		this.yearsOfExperience = yearsOfExperience;
+	public void setYearsOfExperience() 
+	{
+		if(endTime==null)
+		{
+			int year=startTime.getYear()-java.time.LocalDate.now().getYear();
+			int month=startTime.getMonthValue()-java.time.LocalDate.now().getMonthValue();
+			this.yearsOfExperience=year+month/12;
+		}
+		
+		else
+		{
+			int year=startTime.getYear()-endTime.getYear();
+			int month=startTime.getMonthValue()-endTime.getMonthValue();
+			this.yearsOfExperience=year+month/12;
+		}
 	}
 
 	public Resume getAssocicatedResume() {

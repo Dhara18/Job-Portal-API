@@ -82,8 +82,19 @@ public class ExceptionHandler
 	{
 		ErrorStructure<String> errorStructure =new ErrorStructure<>();
 		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
-		errorStructure.setMessage("skill data not found");
+		errorStructure.setMessage("project data not found");
 		errorStructure.setErrorData(projectNotFoundException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(ExpeienceNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>>skillNotFound(ExpeienceNotFoundException expeienceNotFoundException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("experience data not found");
+		errorStructure.setErrorData(expeienceNotFoundException.getMessage());
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
 	}
