@@ -103,6 +103,42 @@ public class ExperienceServiceImpl implements ExperienceService
 			}
 			
 			ResponseStructure<List<ExperienceResponseDTO>> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("Experience object successfully added");
+			responseStructure.setData(responseList);
+
+			return new ResponseEntity<ResponseStructure<List<ExperienceResponseDTO>>>(responseStructure, HttpStatus.FOUND);
+		}
+		else
+		{
+			throw new ResumeNotFoundException("resume with givaen id does not exist");
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<ExperienceResponseDTO>>> deleteExperienceByResume(int resumeId) 
+	{
+		Optional<Resume> optionalResume = resumerepo.findById(resumeId);
+		if(optionalResume.isPresent())
+		{
+			Resume resume = optionalResume.get();
+			List<Experience> experienceList = resume.getExperince();
+			
+			String url="/resumes"+resumeId;
+			Map<String,String> options=new HashMap<>();
+			
+			List<ExperienceResponseDTO> responseList= new ArrayList<>();
+			for(Experience experience:experienceList)
+			{
+				ExperienceResponseDTO experienceResponseDTO = experienceToExperienceResponseDTO(experience);
+				options.put("resume", url);
+				experienceResponseDTO.setResumeOptions(options);
+				
+				responseList.add(experienceResponseDTO);
+				experienceRepo.deleteById(experience.getExprId());
+			}
+			
+			ResponseStructure<List<ExperienceResponseDTO>> responseStructure = new ResponseStructure<>();
 			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 			responseStructure.setMessage("Experience object successfully added");
 			responseStructure.setData(responseList);

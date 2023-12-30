@@ -32,4 +32,10 @@ public class ExperienceController
 	{
 		return experienceService.findExperienceByResume(resumeId);
 	}
+	
+	@RequestMapping(value = "/resumes/{resumeId}",method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<List<ExperienceResponseDTO>>> deleteExperienceByResume(@PathVariable int resumeId)
+	{
+		return experienceService.deleteExperienceByResume(resumeId);
+	}
 }
