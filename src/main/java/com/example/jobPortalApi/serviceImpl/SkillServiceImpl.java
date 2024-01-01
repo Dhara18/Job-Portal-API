@@ -2,7 +2,6 @@ package com.example.jobPortalApi.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +55,7 @@ public class SkillServiceImpl implements SkillService
 	@Override
 	public ResponseEntity<ResponseStructure<String>> addSkillByEmployee(int userid,Skills skills) 
 	{
-		User user = userRepo.findById(userid).get();
+		User user = userRepo.findById(userid).get();			//everything can be replaced with skill identifier method but argument has to be taken as string.......ie...String skill
 		if(user.getUserRole()==UserRole.EMPLOYER)
 		{
 			List<Skills> skillList = skillRepo.findAll();
@@ -286,11 +285,11 @@ public class SkillServiceImpl implements SkillService
 				
 				if(skillList.contains(skillObj))
 				{
-					skillList.remove(skillObj);
+					skillList.remove(skillObj);		//deleting from the list<skill> of resume
 				}
 			}
 
-			skillRepo.delete(skillObj);
+			skillRepo.delete(skillObj);			//deleting from the skill data base	
 
 			SkillResponseDTO skillResponseDTO = skillToSkillResponse(skillObj);
 

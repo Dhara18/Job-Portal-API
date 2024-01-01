@@ -98,4 +98,37 @@ public class ExceptionHandler
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
 	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(SocialProfileNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>>socialProfileNotFound(SocialProfileNotFoundException socialProfileNotFoundException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("experience data not found");
+		errorStructure.setErrorData(socialProfileNotFoundException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(DuplicateProfileTypeException.class)
+	public ResponseEntity<ErrorStructure<String>>duplicateProfileNotFound(DuplicateProfileTypeException duplicateProfileTypeException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("experience data not found");
+		errorStructure.setErrorData(duplicateProfileTypeException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(InvalidProfileTypeException.class)
+	public ResponseEntity<ErrorStructure<String>>invalidProfileNotFound(InvalidProfileTypeException invalidProfileTypeException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("experience data not found");
+		errorStructure.setErrorData(invalidProfileTypeException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
 }
