@@ -38,4 +38,10 @@ public class SocialProfileController
 		return socialProfileService.findSocialProfileByType(resumeId,profileType);
 	}
 	
+	@RequestMapping(value = "/resumes/{resumeId}/profileType/{profileType}",method = RequestMethod.DELETE)		
+	public ResponseEntity<ResponseStructure<SocialProfileResponseDTO>> deleteSocialProfileByType(@PathVariable int resumeId,@PathVariable String profileType)
+	{
+		return socialProfileService.deleteSocialProfileByType(resumeId,profileType);
+	}
+	
 }

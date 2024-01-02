@@ -15,4 +15,7 @@ public interface SocialProfileService
 
 	public ResponseEntity<ResponseStructure<SocialProfileResponseDTO>> findSocialProfileByType(int resumeId,String profileType);
 
+	public ResponseEntity<ResponseStructure<SocialProfileResponseDTO>> deleteSocialProfileByType(int resumeId,
+			String profileType);
+
 }

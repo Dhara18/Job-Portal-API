@@ -210,7 +210,7 @@ public class SocialProfileServiceImpl implements SocialProfileService
 				Map<String,String> options= new HashMap<>();
 				for(SocialProfile socialProfileObj:socialProfileList)
 				{
-					if(socialProfileObj.getProfileType()==profileIdentifier(profileType.toUpperCase()))
+					if(socialProfileObj.getProfileType()==profileIdentifier(profileType.toUpperCase()))//converting String to profileType
 					{
 						SocialProfileResponseDTO socialProfileResponseDTO = socialToSocialProfileResponseDTO(socialProfileObj);
 						options.put("resume", "/resumes/"+resumeId);
@@ -229,6 +229,50 @@ public class SocialProfileServiceImpl implements SocialProfileService
 			else
 			{
 				throw new SocialProfileNotFoundException("social peofile of given type does not exist");
+			}
+			
+		}
+		else
+		{
+			throw new ResumeNotFoundException("resume with given id does not exist");
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<SocialProfileResponseDTO>> deleteSocialProfileByType(int resumeId,
+			String profileType) 
+	{
+		Optional<Resume> optionalResume = resumeRepo.findById(resumeId);
+		if(optionalResume.isPresent())
+		{
+			List<SocialProfile> socialProfileList = optionalResume.get().getSocialProfile();
+			
+			if(!socialProfileList.isEmpty())
+			{
+				Map<String,String> options= new HashMap<>();
+				for(SocialProfile socialProfileObj:socialProfileList)
+				{
+					if(socialProfileObj.getProfileType()==profileIdentifier(profileType.toUpperCase()))//converting String to profileType
+					{
+						SocialProfileResponseDTO socialProfileResponseDTO = socialToSocialProfileResponseDTO(socialProfileObj);
+						options.put("resume", "/resumes/"+resumeId);
+						socialProfileResponseDTO.setResumeOptions(options);
+						
+						socialProfileRepo.deleteById(socialProfileObj.getSocialId());
+						
+						ResponseStructure<SocialProfileResponseDTO> responseStructure = new ResponseStructure<>();
+						responseStructure.setStatusCode(HttpStatus.FOUND.value());
+						responseStructure.setMessage("social Profile object successfully deleted");
+						responseStructure.setData(socialProfileResponseDTO);
+
+						return new ResponseEntity<ResponseStructure<SocialProfileResponseDTO>>(responseStructure, HttpStatus.FOUND);
+					}
+				}
+				throw new SocialProfileNotFoundException("social peofile of given type does not exist..cannot delete");
+			}
+			else
+			{
+				throw new SocialProfileNotFoundException("social peofile of given type does not exist..cannot delete");
 			}
 			
 		}
