@@ -39,7 +39,8 @@ public class ExperienceServiceImpl implements ExperienceService
 		experience.setJobStatus(experienceRequestDTO.isJobStatus());
 		experience.setStartTime(experienceRequestDTO.getStartTime());
 		experience.setEndTime(experienceRequestDTO.getEndTime());
-		
+		// setting year of experience in entity only not in request dto...so after setting start and end time from request to entity,then automatically year of experience is called and set there
+		//setter method of year of experience usually takes argument but here does not take any argument...coz altered and called inside setters of start and end time method
 		return experience;
 	}
 	
@@ -64,7 +65,7 @@ public class ExperienceServiceImpl implements ExperienceService
 		if(optionalResume.isPresent())
 		{
 			Experience experience=experienceRequestDTOToExperience(experienceRequestDTO);
-			experience.setAssocicatedResume(resumerepo.findById(resumeId).get());
+			experience.setAssocicatedResume(optionalResume.get());
 			experienceRepo.save(experience);
 			
 			ResponseStructure<String> responseStructure = new ResponseStructure<>();

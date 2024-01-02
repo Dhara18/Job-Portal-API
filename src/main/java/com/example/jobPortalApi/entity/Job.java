@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -17,11 +18,13 @@ public class Job
 	private String jobTitle;
 	private long jobPackage;
 	private String jobLocation;
-	private List<String> jobSkills;		//@ElementCollection should be added on top of list of strings
 	private String jobExpirienceRequired;
 	
 	@ManyToOne
 	private Company company;
+	
+	@ManyToMany
+	private List<Skills> skills;
 	
 	public Company getCompany() {
 		return company;
@@ -54,11 +57,12 @@ public class Job
 	public void setJobLocation(String jobLocation) {
 		this.jobLocation = jobLocation;
 	}
-	public List<String> getJobSkills() {
-		return jobSkills;
+	
+	public List<Skills> getSkills() {
+		return skills;
 	}
-	public void setJobSkills(List<String> jobSkills) {
-		this.jobSkills = jobSkills;
+	public void setSkills(List<Skills> skills) {
+		this.skills = skills;
 	}
 	public String getJobExpirienceRequired() {
 		return jobExpirienceRequired;

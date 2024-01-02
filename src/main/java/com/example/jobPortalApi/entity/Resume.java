@@ -27,6 +27,9 @@ public class Resume
 	@OneToMany(mappedBy = "resume")
 	private List<Project> projectList;
 	
+	@OneToMany(mappedBy = "eduResume")
+	private List<Education> educationList;
+	
 	@OneToMany(mappedBy = "AssocicatedResume")
 	private List<Experience> experince;
 	
@@ -74,6 +77,12 @@ public class Resume
 	}
 	public void setSocialProfile(List<SocialProfile> socialProfile) {
 		this.socialProfile = socialProfile;
+	}
+	public List<Education> getEducationList() {
+		return educationList;
+	}
+	public void setEducationList(List<Education> educationList) {
+		this.educationList = educationList;
 	}
 	
 	

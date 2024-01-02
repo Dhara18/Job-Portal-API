@@ -113,16 +113,22 @@ public class Experience
 	{
 		if(endTime==null)
 		{
-			int year=startTime.getYear()-java.time.LocalDate.now().getYear();
-			int month=startTime.getMonthValue()-java.time.LocalDate.now().getMonthValue();
+			float year=java.time.LocalDate.now().getYear()-startTime.getYear();
+			System.out.println(year);
+			float month=java.time.LocalDate.now().getMonthValue()-startTime.getMonthValue();
+			System.out.println(month);
 			this.yearsOfExperience=year+month/12;
+			System.out.println(this.yearsOfExperience);
 		}
 		
 		else
 		{
-			int year=startTime.getYear()-endTime.getYear();
-			int month=startTime.getMonthValue()-endTime.getMonthValue();
+			float year=endTime.getYear()-startTime.getYear();
+			System.out.println(year);
+			float month=endTime.getMonthValue()-startTime.getMonthValue();
+			System.out.println(month);
 			this.yearsOfExperience=year+month/12;
+			System.out.println(this.yearsOfExperience);
 		}
 	}
 

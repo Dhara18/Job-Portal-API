@@ -11,12 +11,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.jobPortalApi.entity.Job;
 import com.example.jobPortalApi.entity.Resume;
 import com.example.jobPortalApi.entity.Skills;
 import com.example.jobPortalApi.entity.User;
 import com.example.jobPortalApi.exception.InvalidUserException;
+import com.example.jobPortalApi.exception.JobNotFoundException;
 import com.example.jobPortalApi.exception.ResumeNotFoundException;
 import com.example.jobPortalApi.exception.SkillNotFoundException;
+import com.example.jobPortalApi.repository.JobRepo;
 import com.example.jobPortalApi.repository.ResumeRepo;
 import com.example.jobPortalApi.repository.SkillRepo;
 import com.example.jobPortalApi.repository.UserRepo;
@@ -38,6 +41,9 @@ public class SkillServiceImpl implements SkillService
 
 	@Autowired
 	ResumeRepo resumeRepo;
+	
+	@Autowired
+	JobRepo jobRepo;
 
 	@Autowired
 	ResumeService resumeService;
@@ -121,7 +127,7 @@ public class SkillServiceImpl implements SkillService
 
 	private Skills skillIdentifier(String skill)		//query taking string to compare,cannot pass skill type it means it will be object type
 	{
-		Skills oldSkill = skillRepo.findSkillByName(skill.toLowerCase());
+		Skills oldSkill = skillRepo.findSkillByName(skill.toLowerCase());//findSkillByName not taking LIKE operator why??
 		if(oldSkill==null)
 		{
 			Skills NewSkill= new Skills();
@@ -158,7 +164,7 @@ public class SkillServiceImpl implements SkillService
 			ResponseStructure<String> responseStructure = new ResponseStructure<>();
 			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 			responseStructure.setMessage("skill object successfully added");
-			responseStructure.setData("skill object stored in the data base");
+			responseStructure.setData("skill are added to resume");
 
 			return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
 		}
@@ -167,6 +173,37 @@ public class SkillServiceImpl implements SkillService
 			throw new ResumeNotFoundException("resume with givan id not present..... so cannot add skills");
 		}
 	}
+	
+	@Override
+	public ResponseEntity<ResponseStructure<String>> addSkillByJob(int jobId, List<String> skillList) 
+	{
+		Optional<Job> optionalJob = jobRepo.findById(jobId);
+		if(optionalJob.isPresent())
+		{
+			Job job = optionalJob.get();
+			
+			List<Skills> listOfSkill = new ArrayList<>();
+			for(String StringSkill:skillList)
+			{
+				Skills skills = skillIdentifier(StringSkill);
+				listOfSkill.add(skills);
+			}
+			job.setSkills(listOfSkill);
+			jobRepo.save(job);
+			
+			ResponseStructure<String> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+			responseStructure.setMessage("skill object successfully added");
+			responseStructure.setData("skill are added to job");
+
+			return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
+		}
+		else
+		{
+			throw new JobNotFoundException("job with given id does not exist...so cannot add the skills");
+		}
+	}
+
 
 	@Override
 	public ResponseEntity<ResponseStructure<String>> updateSkillByApplicant(int resumeId, List<String> skillList) 

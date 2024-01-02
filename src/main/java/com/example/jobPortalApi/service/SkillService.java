@@ -20,4 +20,6 @@ public interface SkillService
 	public ResponseEntity<ResponseStructure<SkillResponseDTO>> findSkill(@PathVariable String skill);
 	
 	public ResponseEntity<ResponseStructure<SkillResponseDTO>> deleteSkill(@PathVariable String skill);
+
+	public ResponseEntity<ResponseStructure<String>> addSkillByJob(int jobId, List<String> skillList);
 }

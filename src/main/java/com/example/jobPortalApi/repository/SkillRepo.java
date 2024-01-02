@@ -8,6 +8,6 @@ import com.example.jobPortalApi.entity.Skills;
 
 public interface SkillRepo extends JpaRepository<Skills, Integer>
 {
-	@Query("select s from Skills s where s.skill LIKE %?1%")
+	@Query("select s from Skills s where s.skill=?1")
 	public Skills findSkillByName(String skills);
 }

@@ -34,6 +34,13 @@ public class SkillController
 		return skillService.addSkillByApplicant(resumeId,skillList);
 	}
 	
+	//indirectly adding by employee only
+	@RequestMapping(value = "/jobs/{jobId}/skills",method = RequestMethod.POST)		
+	public ResponseEntity<ResponseStructure<String>> addSkillByJob(@PathVariable int jobId,@RequestBody List<String> skillList)
+	{
+		return skillService.addSkillByJob(jobId,skillList);
+	}
+	
 	@RequestMapping(value = "/resumes/{resumeId}/skills",method = RequestMethod.PUT)
 	public ResponseEntity<ResponseStructure<String>> updateSkillByApplicant(@PathVariable int resumeId,@RequestBody List<String> skillList)
 	{

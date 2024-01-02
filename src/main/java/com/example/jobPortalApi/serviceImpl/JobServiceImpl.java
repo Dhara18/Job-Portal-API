@@ -38,7 +38,6 @@ public class JobServiceImpl implements JobService
 		job.setJobTitle(jobRequestDTO.getJobTitle());
 		job.setJobPackage(jobRequestDTO.getJobPackage());
 		job.setJobLocation(jobRequestDTO.getJobLocation());
-		job.setJobSkills(jobRequestDTO.getJobSkills());
 		job.setJobExpirienceRequired(jobRequestDTO.getJobExpirienceRequired());
 
 		return job;
@@ -52,7 +51,6 @@ public class JobServiceImpl implements JobService
 		jobResponceDTO.setJobTitle(job.getJobTitle());
 		jobResponceDTO.setJobPackage(job.getJobPackage());
 		jobResponceDTO.setJobLocation(job.getJobLocation());
-		jobResponceDTO.setJobSkills(job.getJobSkills());
 		jobResponceDTO.setJobExpirienceRequired(job.getJobExpirienceRequired());
 
 		return jobResponceDTO;
@@ -232,7 +230,6 @@ public class JobServiceImpl implements JobService
 				job.setJobTitle(jobRequestDto.getJobTitle());
 				job.setJobPackage(jobRequestDto.getJobPackage());
 				job.setJobLocation(jobRequestDto.getJobLocation());
-				job.setJobSkills(jobRequestDto.getJobSkills());
 				job.setJobExpirienceRequired(jobRequestDto.getJobExpirienceRequired());
 
 				jobRepo.save(job);
