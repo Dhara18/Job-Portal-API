@@ -149,17 +149,15 @@ public class SkillServiceImpl implements SkillService
 		if(optionalResume.isPresent())
 		{
 			Resume resume = optionalResume.get();
-			System.out.println("44444444444");
+			
 			for(String skills:skillList)	//here taking skills as list of string and converting to skill based on the string exist in the data base
 			{
 				Skills returnSkill = skillIdentifier(skills);
-				System.out.println("333333333333");
 
 				list.add(returnSkill);
 			}
-			System.out.println("000000000000000000000000");
+			
 			resume.setListSkill(list);		//here assigning the values to the resume....
-			System.out.println("11111111111111111111111111");
 			resumeRepo.save(resume);
 			ResponseStructure<String> responseStructure = new ResponseStructure<>();
 			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());

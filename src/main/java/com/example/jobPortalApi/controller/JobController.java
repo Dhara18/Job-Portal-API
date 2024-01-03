@@ -45,6 +45,18 @@ public class JobController
 		return jobService.findByJobLocation(jobLocation);
 	}
 	
+	@RequestMapping(value = "/skills/{skill}/jobs", method = RequestMethod.GET)
+	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findBySkill(@PathVariable String skill)
+	{
+		return jobService.findBySkill(skill);
+	}
+	
+	@RequestMapping(value = "/skills/jobs", method = RequestMethod.GET)
+	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findBySkillList(@RequestBody List<String> skillList)
+	{
+		return jobService.findBySkillList(skillList);
+	}
+	
 	@RequestMapping(value = "/Companies/{companyId}/jobs/{jobId}", method = RequestMethod.PUT)		
 	public ResponseEntity<ResponseStructure<String>> updateJobById(@PathVariable int jobId,@PathVariable int companyId,@RequestBody JobRequestDTO jobRequestDto)
 	{

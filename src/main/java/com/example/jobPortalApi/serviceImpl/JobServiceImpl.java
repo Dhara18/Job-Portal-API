@@ -13,10 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.jobPortalApi.entity.Company;
 import com.example.jobPortalApi.entity.Job;
+import com.example.jobPortalApi.entity.Skills;
 import com.example.jobPortalApi.exception.CompanyNotFoundException;
 import com.example.jobPortalApi.exception.JobNotFoundException;
+import com.example.jobPortalApi.exception.SkillNotFoundException;
 import com.example.jobPortalApi.repository.CompanyRepo;
 import com.example.jobPortalApi.repository.JobRepo;
+import com.example.jobPortalApi.repository.SkillRepo;
 import com.example.jobPortalApi.requestDTO.JobRequestDTO;
 import com.example.jobPortalApi.responseDTO.JobResponceDTO;
 import com.example.jobPortalApi.service.JobService;
@@ -30,6 +33,9 @@ public class JobServiceImpl implements JobService
 
 	@Autowired
 	CompanyRepo companyRepo;
+	
+	@Autowired
+	SkillRepo skillRepo;
 
 	public Job JobRequestDTOToJob(JobRequestDTO jobRequestDTO)
 	{
@@ -51,6 +57,7 @@ public class JobServiceImpl implements JobService
 		jobResponceDTO.setJobTitle(job.getJobTitle());
 		jobResponceDTO.setJobPackage(job.getJobPackage());
 		jobResponceDTO.setJobLocation(job.getJobLocation());
+		jobResponceDTO.setSkills(job.getSkills());
 		jobResponceDTO.setJobExpirienceRequired(job.getJobExpirienceRequired());
 
 		return jobResponceDTO;
@@ -294,6 +301,71 @@ public class JobServiceImpl implements JobService
 		{
 			throw new CompanyNotFoundException("there is no company to delete the job");
 		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findBySkill(String skill) 
+	{
+		Skills skills = skillRepo.findSkillByName(skill);
+		if(skills==null)
+		{
+			throw new SkillNotFoundException("please enter the valid skill");
+		}
+		else
+		{
+			List<Job> jobList = jobRepo.findAllBySkills(skills);
+			List<JobResponceDTO> jobResponseList= new ArrayList<>();
+			
+			for(Job job:jobList)
+			{
+				String url="/companies/"+job.getCompany().getCompanyId();
+				Map<String,String> options= new HashMap<>();
+				JobResponceDTO jobResponceDTO = jobToJobResponceDTO(job);
+				options.put("companies", url);
+				jobResponceDTO.setOptions(options);
+				jobResponseList.add(jobResponceDTO);
+			}
+			ResponseStructure<List<JobResponceDTO>> responseStructure= new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("job entities with given location found successfully");
+			responseStructure.setData(jobResponseList);
+
+			return new ResponseEntity<ResponseStructure<List<JobResponceDTO>>>(responseStructure, HttpStatus.FOUND);
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findBySkillList(List<String> skillList) 
+	{
+		List<Skills> listOfSkills= new ArrayList<>();
+		for(String skillString:skillList)
+		{
+			Skills skills = skillRepo.findSkillByName(skillString);
+			listOfSkills.add(skills);
+		}
+		
+		List<Job> jobList =new ArrayList<>();
+		for(Skills skills:listOfSkills)
+		{
+			jobList = jobRepo.findAllBySkills(skills);
+		}
+		
+		List<JobResponceDTO> jobResponseList= new ArrayList<>();
+		for(Job job:jobList)
+		{
+			String url="/companies/"+job.getCompany().getCompanyId();
+			Map<String,String> options= new HashMap<>();
+			JobResponceDTO jobResponceDTO = jobToJobResponceDTO(job);
+			options.put("companies", url);
+			jobResponceDTO.setOptions(options);
+			jobResponseList.add(jobResponceDTO);
+		}
+		ResponseStructure<List<JobResponceDTO>> responseStructure= new ResponseStructure<>();
+		responseStructure.setStatusCode(HttpStatus.FOUND.value());
+		responseStructure.setMessage("job entities with given location found successfully");
+		responseStructure.setData(jobResponseList);
+
+		return new ResponseEntity<ResponseStructure<List<JobResponceDTO>>>(responseStructure, HttpStatus.FOUND);
 	}
 
 

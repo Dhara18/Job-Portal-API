@@ -15,8 +15,8 @@ public class Job
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int jobId;
-	private String jobTitle;
-	private long jobPackage;
+	private String jobTitle;//designation
+	private long jobPackage;//ctc
 	private String jobLocation;
 	private String jobExpirienceRequired;
 	

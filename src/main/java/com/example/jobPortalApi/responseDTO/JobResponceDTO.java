@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.example.jobPortalApi.entity.Skills;
+
 @Component
 public class JobResponceDTO 
 {
@@ -12,9 +14,8 @@ public class JobResponceDTO
 	private String jobTitle;
 	private long jobPackage;
 	private String jobLocation;
-	private List<String> jobSkills;
 	private String jobExpirienceRequired;
-	
+	private List<Skills> skills;
 	private Map<String,String>options;
 	
 	public Map<String, String> getOptions() {
@@ -47,11 +48,12 @@ public class JobResponceDTO
 	public void setJobLocation(String jobLocation) {
 		this.jobLocation = jobLocation;
 	}
-	public List<String> getJobSkills() {
-		return jobSkills;
+	
+	public List<Skills> getSkills() {
+		return skills;
 	}
-	public void setJobSkills(List<String> jobSkills) {
-		this.jobSkills = jobSkills;
+	public void setSkills(List<Skills> skills) {
+		this.skills = skills;
 	}
 	public String getJobExpirienceRequired() {
 		return jobExpirienceRequired;

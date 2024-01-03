@@ -2,11 +2,9 @@ package com.example.jobPortalApi.requestDTO;
 
 import java.time.LocalDate;
 
-import com.exmple.jobPortalApi.enums.EducationType;
-
 public class EducationRequestDTO 
 {
-	private EducationType educationType;
+	
 	private LocalDate StartDate;
 	private LocalDate endDate; 
 	private boolean presentStatus;
@@ -14,14 +12,9 @@ public class EducationRequestDTO
 	private float cgpa;
 	private String institutename;
 	private String location;
-	private String degreeType;
-	private String degreeStream;
-	public EducationType getEducationType() {
-		return educationType;
-	}
-	public void setEducationType(EducationType educationType) {
-		this.educationType = educationType;
-	}
+	private String streamType;
+	private String streamCombination;
+	
 	public LocalDate getStartDate() {
 		return StartDate;
 	}
@@ -64,18 +57,17 @@ public class EducationRequestDTO
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getDegreeType() {
-		return degreeType;
+	public String getStreamType() {
+		return streamType;
 	}
-	public void setDegreeType(String degreeType) {
-		this.degreeType = degreeType;
+	public void setStreamType(String streamType) {
+		this.streamType = streamType;
 	}
-	public String getDegreeStream() {
-		return degreeStream;
+	public String getStreamCombination() {
+		return streamCombination;
 	}
-	public void setDegreeStream(String degreeStream) {
-		this.degreeStream = degreeStream;
+	public void setStreamCombination(String streamCombination) {
+		this.streamCombination = streamCombination;
 	}
-	
 	
 }

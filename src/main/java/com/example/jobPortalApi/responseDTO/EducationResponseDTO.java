@@ -16,8 +16,8 @@ public class EducationResponseDTO
 	private float cgpa;
 	private String institutename;
 	private String location;
-	private String degreeType;
-	private String degreeStream;
+	private String streamType;
+	private String streamCombination;
 	
 	private Map<String,String> resumeOptions;
 	
@@ -75,17 +75,18 @@ public class EducationResponseDTO
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getDegreeType() {
-		return degreeType;
+	public String getStreamType() {
+		return streamType;
 	}
-	public void setDegreeType(String degreeType) {
-		this.degreeType = degreeType;
+	public void setStreamType(String streamType) {
+		this.streamType = streamType;
 	}
-	public String getDegreeStream() {
-		return degreeStream;
+	
+	public String getStreamCombination() {
+		return streamCombination;
 	}
-	public void setDegreeStream(String degreeStream) {
-		this.degreeStream = degreeStream;
+	public void setStreamCombination(String streamCombination) {
+		this.streamCombination = streamCombination;
 	}
 	public Map<String, String> getResumeOptions() {
 		return resumeOptions;
