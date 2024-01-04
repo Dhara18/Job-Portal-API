@@ -43,4 +43,10 @@ public class JobApplicationController
 	{
 		return jobApplicationService.rejectJobApplicationByApplicationId(jobapplicationId);
 	}
+	
+	@RequestMapping(value = "/users/{userId}/jobs/{jobId}/jobapplications",method = RequestMethod.DELETE)
+	public ResponseEntity<ResponseStructure<JobApplicationResponseDTO>> deleteJobApplication(@PathVariable int userId,@PathVariable int jobId)
+	{
+		return jobApplicationService.deleteJobApplication(userId,jobId);
+	}
 }

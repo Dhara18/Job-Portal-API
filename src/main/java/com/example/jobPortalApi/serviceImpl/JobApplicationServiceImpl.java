@@ -230,4 +230,54 @@ public class JobApplicationServiceImpl implements JobApplicationService
 		}
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<JobApplicationResponseDTO>> deleteJobApplication(int userId, int jobId) 
+	{
+		Optional<User> optionalUser = userRepo.findById(userId);
+		
+		if(optionalUser.isPresent())
+		{
+			User user = optionalUser.get();
+			if(user.getUserRole()==UserRole.APPLICANT)
+			{
+				Optional<Job> optionalJob = jobRepo.findById(jobId);
+				if(optionalJob.isPresent())
+				{
+					JobApplication jobApplication = jobApplicationRepo.deleteJobApplication(userId, jobId);
+					
+					Map<String,String> userOpt=new HashMap<>();
+					Map<String,String> jobOpt=new HashMap<>();
+					
+					userOpt.put("users", "/users/"+jobApplication.getApplicant().getUserId());
+					jobOpt.put("jobs", "/jobs/"+jobApplication.getJob().getJobId());
+					
+					JobApplicationResponseDTO jobApplicationResponseDTO = jobApplicationToJobApplicationResponseDTO(jobApplication);
+					jobApplicationResponseDTO.setJobOptions(jobOpt);
+					jobApplicationResponseDTO.setUserOptions(userOpt);
+					
+					jobApplicationRepo.delete(jobApplication);
+					
+					ResponseStructure<JobApplicationResponseDTO> responseStructure = new ResponseStructure<>();
+					responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+					responseStructure.setMessage("job Apllication object successfully deleted");
+					responseStructure.setData(jobApplicationResponseDTO);
+					
+					return new ResponseEntity<ResponseStructure<JobApplicationResponseDTO>>(responseStructure, HttpStatus.ACCEPTED);
+				}
+				else
+				{
+					throw new JobNotFoundException("job with given id does not exist");
+				}
+			}
+			else
+			{
+				throw new InvalidUserException("onliy the applicant can delete the job application");
+			}
+		}
+		else
+		{
+			throw new UserNotFoundException("user with id not found");
+		}
+	}
+
 }

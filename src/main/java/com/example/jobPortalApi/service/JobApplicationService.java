@@ -18,4 +18,6 @@ public interface JobApplicationService
 
 	ResponseEntity<ResponseStructure<String>> rejectJobApplicationByApplicationId(int jobapplicationId);
 
+	ResponseEntity<ResponseStructure<JobApplicationResponseDTO>> deleteJobApplication(int userId, int jobId);
+
 }
