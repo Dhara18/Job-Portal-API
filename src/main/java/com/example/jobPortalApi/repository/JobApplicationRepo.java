@@ -13,4 +13,5 @@ public interface JobApplicationRepo extends JpaRepository<JobApplication, Intege
 	public List<JobApplication> findAllByJob(Job job);
 	
 	public List<JobApplication> findAllByApplicant(User user);
+	
 }

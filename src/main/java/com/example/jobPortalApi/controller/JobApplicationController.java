@@ -31,4 +31,10 @@ public class JobApplicationController
 	{
 		return jobApplicationService.findJobApplicationByUser(userId);
 	}
+	
+	@RequestMapping(value = "/jobs/{jobId}/jobapplications",method = RequestMethod.GET)
+	public ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>> findJobApplicationByJob(@PathVariable int jobId)
+	{
+		return jobApplicationService.findJobApplicationByUJob(jobId);
+	}
 }

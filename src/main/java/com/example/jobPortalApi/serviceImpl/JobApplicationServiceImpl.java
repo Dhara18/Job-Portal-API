@@ -136,8 +136,8 @@ public class JobApplicationServiceImpl implements JobApplicationService
 					Map<String,String> userOpt=new HashMap<>();
 					Map<String,String> jobOpt=new HashMap<>();
 					
-					userOpt.put("users", "/users"+jobApplication.getApplicant().getUserId());
-					jobOpt.put("jobs", "/jobs"+jobApplication.getJob().getJobId());
+					userOpt.put("users", "/users/"+jobApplication.getApplicant().getUserId());
+					jobOpt.put("jobs", "/jobs/"+jobApplication.getJob().getJobId());
 					
 					JobApplicationResponseDTO jobApplicationResponseDTO=jobApplicationToJobApplicationResponseDTO(jobApplication);
 					
@@ -157,6 +157,45 @@ public class JobApplicationServiceImpl implements JobApplicationService
 			{
 				throw new UserNotFoundException("user with id not found");
 			}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>> findJobApplicationByUJob(int jobId) 
+	{
+		Optional<Job> optionalJob = jobRepo.findById(jobId);
+		
+		if(optionalJob.isPresent())
+		{
+			Job job = optionalJob.get();
+			List<JobApplication> jobApplicationList =jobApplicationRepo.findAllByJob(job);
+			
+			List<JobApplicationResponseDTO> jobApplicationResponseDTOList= new ArrayList<>();
+			for(JobApplication jobApplication:jobApplicationList)
+			{
+				Map<String,String> userOpt=new HashMap<>();
+				Map<String,String> jobOpt=new HashMap<>();
+				
+				userOpt.put("users", "/users/"+jobApplication.getApplicant().getUserId());
+				jobOpt.put("jobs", "/jobs/"+jobApplication.getJob().getJobId());
+				
+				JobApplicationResponseDTO jobApplicationResponseDTO=jobApplicationToJobApplicationResponseDTO(jobApplication);
+				
+				jobApplicationResponseDTO.setUserOptions(userOpt);
+				jobApplicationResponseDTO.setJobOptions(jobOpt);
+				jobApplicationResponseDTOList.add(jobApplicationResponseDTO);
+			}
+			
+			ResponseStructure<List<JobApplicationResponseDTO>> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("job Apllication object successfully found");
+			responseStructure.setData(jobApplicationResponseDTOList);
+
+			return new ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>>(responseStructure, HttpStatus.FOUND);
+		}
+		else
+		{
+			throw new JobNotFoundException("job for given id does not exist");
+		}
 	}
 
 }

@@ -14,4 +14,6 @@ public interface JobApplicationService
 
 	ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>> findJobApplicationByUser(int userId);
 
+	ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>> findJobApplicationByUJob(int jobId);
+
 }
