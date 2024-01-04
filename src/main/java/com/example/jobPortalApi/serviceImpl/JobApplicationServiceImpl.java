@@ -17,6 +17,7 @@ import com.example.jobPortalApi.entity.User;
 import com.example.jobPortalApi.exception.DuplicateJobApplicationException;
 import com.example.jobPortalApi.exception.InvalidJobStatusException;
 import com.example.jobPortalApi.exception.InvalidUserException;
+import com.example.jobPortalApi.exception.JobApplicationNotFoundException;
 import com.example.jobPortalApi.exception.JobNotFoundException;
 import com.example.jobPortalApi.exception.UserNotFoundException;
 import com.example.jobPortalApi.repository.JobApplicationRepo;
@@ -201,6 +202,31 @@ public class JobApplicationServiceImpl implements JobApplicationService
 		else
 		{
 			throw new JobNotFoundException("job for given id does not exist");
+		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<String>>rejectJobApplicationByApplicationId(int jobapplicationId) 
+	{
+		Optional<JobApplication> optionalJobApplication = jobApplicationRepo.findById(jobapplicationId);
+		
+		if(optionalJobApplication.isPresent())
+		{
+			JobApplication jobApplication=optionalJobApplication.get();
+			jobApplication.setStatus(JobApplicationStatus.REJECTED);
+			
+			jobApplicationRepo.save(jobApplication);
+			
+			ResponseStructure<String> responseStructure = new ResponseStructure<>();
+			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+			responseStructure.setMessage("job Apllication object successfully updated");
+			responseStructure.setData("job Apllication rejected");
+			
+			return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.ACCEPTED);
+		}
+		else
+		{
+			throw new JobApplicationNotFoundException("Job Application with given id does not exist");
 		}
 	}
 

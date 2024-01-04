@@ -37,4 +37,10 @@ public class JobApplicationController
 	{
 		return jobApplicationService.findJobApplicationByUJob(jobId);
 	}
+	
+	@RequestMapping(value = "/jobapplications/{jobapplicationId}",method = RequestMethod.PUT)
+	public ResponseEntity<ResponseStructure<String>> rejectJobApplicationByApplicationId(@PathVariable int jobapplicationId)
+	{
+		return jobApplicationService.rejectJobApplicationByApplicationId(jobapplicationId);
+	}
 }
