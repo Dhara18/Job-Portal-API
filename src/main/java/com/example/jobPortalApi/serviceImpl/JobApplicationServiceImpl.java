@@ -133,6 +133,9 @@ public class JobApplicationServiceImpl implements JobApplicationService
 				List<JobApplicationResponseDTO> jobApplicationResponseDTOList= new ArrayList<>();
 				for(JobApplication jobApplication:jobApplicationList)
 				{
+					jobApplication.setStatus(JobApplicationStatus.VIWED);//every time job application found job application status has to change
+					jobApplicationRepo.save(jobApplication);
+					
 					Map<String,String> userOpt=new HashMap<>();
 					Map<String,String> jobOpt=new HashMap<>();
 					
@@ -172,6 +175,9 @@ public class JobApplicationServiceImpl implements JobApplicationService
 			List<JobApplicationResponseDTO> jobApplicationResponseDTOList= new ArrayList<>();
 			for(JobApplication jobApplication:jobApplicationList)
 			{
+				jobApplication.setStatus(JobApplicationStatus.VIWED);
+				jobApplicationRepo.save(jobApplication);
+				
 				Map<String,String> userOpt=new HashMap<>();
 				Map<String,String> jobOpt=new HashMap<>();
 				
