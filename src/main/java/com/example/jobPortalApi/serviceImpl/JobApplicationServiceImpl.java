@@ -1,6 +1,9 @@
 package com.example.jobPortalApi.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +119,44 @@ public class JobApplicationServiceImpl implements JobApplicationService
 		{
 			throw new UserNotFoundException("user with id not found");
 		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>> findJobApplicationByUser(int userId) 
+	{
+		Optional<User> optionalUser = userRepo.findById(userId);
+				
+			if(optionalUser.isPresent())
+			{
+				List<JobApplication> jobApplicationList = jobApplicationRepo.findAllByApplicant(optionalUser.get());
+				
+				List<JobApplicationResponseDTO> jobApplicationResponseDTOList= new ArrayList<>();
+				for(JobApplication jobApplication:jobApplicationList)
+				{
+					Map<String,String> userOpt=new HashMap<>();
+					Map<String,String> jobOpt=new HashMap<>();
+					
+					userOpt.put("users", "/users"+jobApplication.getApplicant().getUserId());
+					jobOpt.put("jobs", "/jobs"+jobApplication.getJob().getJobId());
+					
+					JobApplicationResponseDTO jobApplicationResponseDTO=jobApplicationToJobApplicationResponseDTO(jobApplication);
+					
+					jobApplicationResponseDTO.setUserOptions(userOpt);
+					jobApplicationResponseDTO.setJobOptions(jobOpt);
+					jobApplicationResponseDTOList.add(jobApplicationResponseDTO);
+				}
+				
+				ResponseStructure<List<JobApplicationResponseDTO>> responseStructure = new ResponseStructure<>();
+				responseStructure.setStatusCode(HttpStatus.FOUND.value());
+				responseStructure.setMessage("job Apllication object successfully found");
+				responseStructure.setData(jobApplicationResponseDTOList);
+
+				return new ResponseEntity<ResponseStructure<List<JobApplicationResponseDTO>>>(responseStructure, HttpStatus.FOUND);
+			}
+			else
+			{
+				throw new UserNotFoundException("user with id not found");
+			}
 	}
 
 }
