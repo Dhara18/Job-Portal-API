@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.example.jobPortalApi.entity.Skills;
+import com.exmple.jobPortalApi.enums.JobStatus;
 
 @Component
 public class JobResponceDTO 
@@ -17,6 +18,7 @@ public class JobResponceDTO
 	private String jobExpirienceRequired;
 	private List<Skills> skills;
 	private Map<String,String>options;
+	private JobStatus jobStatus;
 	
 	public Map<String, String> getOptions() {
 		return options;
@@ -60,6 +62,12 @@ public class JobResponceDTO
 	}
 	public void setJobExpirienceRequired(String jobExpirienceRequired) {
 		this.jobExpirienceRequired = jobExpirienceRequired;
+	}
+	public JobStatus getJobStatus() {
+		return jobStatus;
+	}
+	public void setJobStatus(JobStatus jobStatus) {
+		this.jobStatus = jobStatus;
 	}
 	
 }

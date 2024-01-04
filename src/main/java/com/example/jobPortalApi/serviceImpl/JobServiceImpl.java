@@ -24,6 +24,7 @@ import com.example.jobPortalApi.requestDTO.JobRequestDTO;
 import com.example.jobPortalApi.responseDTO.JobResponceDTO;
 import com.example.jobPortalApi.service.JobService;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.JobStatus;
 
 @Service
 public class JobServiceImpl implements JobService
@@ -59,12 +60,12 @@ public class JobServiceImpl implements JobService
 		jobResponceDTO.setJobLocation(job.getJobLocation());
 		jobResponceDTO.setSkills(job.getSkills());
 		jobResponceDTO.setJobExpirienceRequired(job.getJobExpirienceRequired());
-
+		jobResponceDTO.setJobStatus(job.getJobStatus());
 		return jobResponceDTO;
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> addjob(int comapnyId,JobRequestDTO jobRequestDto) 
+	public ResponseEntity<ResponseStructure<String>> addjob(int comapnyId,JobRequestDTO jobRequestDto,JobStatus jobStatus) 
 	{
 		Optional<Company> optionalCompany = companyRepo.findById(comapnyId);
 
@@ -73,6 +74,7 @@ public class JobServiceImpl implements JobService
 			Company company=optionalCompany.get();
 
 			Job job = JobRequestDTOToJob(jobRequestDto);
+			job.setJobStatus(jobStatus);
 			job.setCompany(company);
 
 			jobRepo.save(job);
@@ -181,7 +183,9 @@ public class JobServiceImpl implements JobService
 	@Override
 	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findByJobLocation(String jobLocation) 
 	{
-		List<Job> jobList = jobRepo.findByLocation(jobLocation);
+//		List<Job> jobList = jobRepo.findByLocation(jobLocation);
+		
+		List<Job> jobList = jobRepo.findAllByJobLocation(jobLocation);
 
 		List<JobResponceDTO> jobResponceDTOList= new ArrayList<>();
 
@@ -222,7 +226,7 @@ public class JobServiceImpl implements JobService
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId, int companyId,JobRequestDTO jobRequestDto) 
+	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId, int companyId,JobRequestDTO jobRequestDto,JobStatus jobStatus) 
 	{
 		Optional<Company> opytionalCompany = companyRepo.findById(companyId);
 
@@ -238,6 +242,7 @@ public class JobServiceImpl implements JobService
 				job.setJobPackage(jobRequestDto.getJobPackage());
 				job.setJobLocation(jobRequestDto.getJobLocation());
 				job.setJobExpirienceRequired(jobRequestDto.getJobExpirienceRequired());
+				job.setJobStatus(jobStatus);
 
 				jobRepo.save(job);
 

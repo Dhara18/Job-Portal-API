@@ -1,5 +1,6 @@
 package com.exmple.jobPortalApi.enums;
 
-public enum JobStatus {
-
+public enum JobStatus 
+{
+	OPEN,CLOSED
 }

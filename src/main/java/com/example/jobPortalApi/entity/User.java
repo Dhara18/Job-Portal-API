@@ -28,7 +28,7 @@ public class User
 	@OneToOne(mappedBy = "userType")		//only applicant can have the resume
 	private Resume resume;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "applicant")
 	private List<JobApplication> jobApplicationList;		//only applicant can have the resume
 	
 	public int getUserId() {

@@ -7,10 +7,11 @@ import org.springframework.http.ResponseEntity;
 import com.example.jobPortalApi.requestDTO.JobRequestDTO;
 import com.example.jobPortalApi.responseDTO.JobResponceDTO;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.JobStatus;
 
 public interface JobService 
 {
-	public ResponseEntity<ResponseStructure<String>> addjob(int comapnyId,JobRequestDTO jobRequestDto);
+	public ResponseEntity<ResponseStructure<String>> addjob(int comapnyId,JobRequestDTO jobRequestDto,JobStatus jobStatus);
 	
 	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findByJobTitle(String jobTitle);
 	
@@ -18,7 +19,7 @@ public interface JobService
 	
 	public ResponseEntity<ResponseStructure<List<JobResponceDTO>>> findByJobLocation(String jobLocation);
 	
-	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId,int companyId,JobRequestDTO jobRequestDto);
+	public ResponseEntity<ResponseStructure<String>> updateJobById(int jobId,int companyId,JobRequestDTO jobRequestDto,JobStatus jobStatus);
 	
 	public ResponseEntity<ResponseStructure<JobResponceDTO>> deleteJobByCompanyId(int companyId,int jobId);
 

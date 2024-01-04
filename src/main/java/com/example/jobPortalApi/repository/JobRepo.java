@@ -18,8 +18,10 @@ public interface JobRepo extends JpaRepository<Job, Integer>
 	@Query("select j from Job j where j.company.companyId=?1")		//because like cannot take string
 	public List<Job> findByCompanyId(int id);
 	
-	@Query("select j from Job j where j.jobLocation LIKE ?1%")
-	public List<Job> findByLocation(String location);
+//	@Query("select j from Job j where j.jobLocation LIKE ?1%")
+//	public List<Job> findByLocation(String location);
+	
+	public List<Job> findAllByJobLocation(String location);
 	
 	public List<Job> findAllBySkills(Skills skill);
 }

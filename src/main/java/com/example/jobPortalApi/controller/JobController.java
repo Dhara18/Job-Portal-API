@@ -14,6 +14,7 @@ import com.example.jobPortalApi.requestDTO.JobRequestDTO;
 import com.example.jobPortalApi.responseDTO.JobResponceDTO;
 import com.example.jobPortalApi.service.JobService;
 import com.example.jobPortalApi.utility.ResponseStructure;
+import com.exmple.jobPortalApi.enums.JobStatus;
 
 @RestController
 public class JobController 
@@ -21,10 +22,10 @@ public class JobController
 	@Autowired
 	JobService jobService;
 	
-	@RequestMapping(value = "/Companies/{comapnyId}/jobs", method = RequestMethod.POST)		//not checking for user because if the company is existing means only employee has added it...no need to check for user
-	public ResponseEntity<ResponseStructure<String>> addjob(@PathVariable int comapnyId,@RequestBody JobRequestDTO jobRequestDto)
+	@RequestMapping(value = "/Companies/{comapnyId}/jobtype/{jobtype}/jobs", method = RequestMethod.POST)		//not checking for user because if the company is existing means only employee has added it...no need to check for user
+	public ResponseEntity<ResponseStructure<String>> addjob(@PathVariable int comapnyId,@RequestBody JobRequestDTO jobRequestDto,@PathVariable JobStatus jobStatus)
 	{
-		return jobService.addjob(comapnyId,jobRequestDto);
+		return jobService.addjob(comapnyId,jobRequestDto,jobStatus);
 	}
 	
 	@RequestMapping(value = "/jobs/{jobTitle}", method = RequestMethod.GET)
@@ -58,9 +59,9 @@ public class JobController
 	}
 	
 	@RequestMapping(value = "/Companies/{companyId}/jobs/{jobId}", method = RequestMethod.PUT)		
-	public ResponseEntity<ResponseStructure<String>> updateJobById(@PathVariable int jobId,@PathVariable int companyId,@RequestBody JobRequestDTO jobRequestDto)
+	public ResponseEntity<ResponseStructure<String>> updateJobById(@PathVariable int jobId,@PathVariable int companyId,@PathVariable JobStatus jobStatus,@RequestBody JobRequestDTO jobRequestDto)
 	{
-		return jobService.updateJobById(jobId,companyId,jobRequestDto);
+		return jobService.updateJobById(jobId,companyId,jobRequestDto,jobStatus);
 	}
 	
 	@RequestMapping(value = "/companies/{companyId}/jobs/{jobId}", method = RequestMethod.DELETE)

@@ -104,7 +104,7 @@ public class ExceptionHandler
 	{
 		ErrorStructure<String> errorStructure =new ErrorStructure<>();
 		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
-		errorStructure.setMessage("experience data not found");
+		errorStructure.setMessage("social profile data not found");
 		errorStructure.setErrorData(socialProfileNotFoundException.getMessage());
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
@@ -115,7 +115,7 @@ public class ExceptionHandler
 	{
 		ErrorStructure<String> errorStructure =new ErrorStructure<>();
 		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
-		errorStructure.setMessage("experience data not found");
+		errorStructure.setMessage("duplicate profile");
 		errorStructure.setErrorData(duplicateProfileTypeException.getMessage());
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
@@ -126,8 +126,41 @@ public class ExceptionHandler
 	{
 		ErrorStructure<String> errorStructure =new ErrorStructure<>();
 		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
-		errorStructure.setMessage("experience data not found");
+		errorStructure.setMessage("invalid profile");
 		errorStructure.setErrorData(invalidProfileTypeException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(JobApplicationNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>>invalidProfileNotFound(JobApplicationNotFoundException jobApplicationNotFoundException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("job application data not found");
+		errorStructure.setErrorData(jobApplicationNotFoundException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(InvalidJobStatusException.class)
+	public ResponseEntity<ErrorStructure<String>>invalidjobs(InvalidJobStatusException invalidJobStatusException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("invalid job status");
+		errorStructure.setErrorData(invalidJobStatusException.getMessage());
+		
+		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(DuplicateJobApplicationException.class)
+	public ResponseEntity<ErrorStructure<String>>invalidjobs(DuplicateJobApplicationException duplicateJobApplicationException)
+	{
+		ErrorStructure<String> errorStructure =new ErrorStructure<>();
+		errorStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		errorStructure.setMessage("duplicate job application");
+		errorStructure.setErrorData(duplicateJobApplicationException.getMessage());
 		
 		return new ResponseEntity<ErrorStructure<String>>(errorStructure, HttpStatus.NOT_FOUND);
 	}
